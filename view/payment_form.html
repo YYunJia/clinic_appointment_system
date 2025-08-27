@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment Form</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="payment-container">
+        <h2>Pay for Appointment</h2>
+        <form action="../controller/process_payment.php" method="POST">
+            <label>Appointment ID:</label>
+            <input type="number" name="appointment_id" required>
+
+            <label>Amount (RM):</label>
+            <input type="number" name="amount" required>
+
+            <label>Payment Method:</label>
+            <select name="payment_method" required>
+                <option value="credit">Credit Card</option>
+                <option value="package">Service Package</option>
+            </select>
+
+            <button type="submit">Pay Now</button>
+        </form>
+    </div>
+</body>
+</html>

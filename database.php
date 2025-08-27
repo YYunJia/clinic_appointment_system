@@ -1,11 +1,10 @@
 <?php
 
 function getDBConnection() {
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "badminton_tournament";
-
+    $servername = "172.16.63.169";
+    $username = "remote_user";
+    $password = "dentalclinic123";
+    $dbname = "dental_clinic";
     try {
         $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

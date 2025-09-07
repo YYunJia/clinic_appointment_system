@@ -1,7 +1,7 @@
 <?php
 
 function getDBConnection() {
-    $servername = "192.168.1.29";
+    $servername = "192.168.0.114";
     $username = "remote_user";
     $password = "dentalclinic123";
     $dbname = "dental_clinic";

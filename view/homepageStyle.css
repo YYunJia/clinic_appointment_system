@@ -275,7 +275,6 @@ body {
 
 .apptBtn:hover {
     background: #1c2561;
-    transform: translateY(-3px);
 }
 
 .consultBtn {
@@ -285,5 +284,4 @@ body {
 
 .consultBtn:hover {
     background: #f0f0f0;
-    transform: translateY(-3px);
 }

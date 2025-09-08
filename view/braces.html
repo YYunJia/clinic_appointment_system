@@ -1,90 +1,222 @@
 <!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
--->
+
 <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>SmileMaker Dental</title>
-        <link rel="stylesheet" href=".//homepageStyle.css">
-       
-    </head>
-    <body>
-        <div class="navigation-container">
-            <div class="logo-section">
-                <div class="logo">
-                    <a class="navbar-logo" href="#">
-                        <img src="../image/logowithoutname.png" alt="Logo" style="width:40px;" class="rounded-pill">
-                    </a>
-                </div>
-                <div class="name">SMILEMAKER</div>
-            </div>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Routine Checkup</title>
+    <link rel="stylesheet" href=".//homepageStyle.css">
+    <link rel="stylesheet" href="fontawesome/css/fontawesome.min.css">
+    <link rel="stylesheet" href="fontawesome/css/all.min.css">
 
-            <div class="navigation-bar">
-                <ul>
-                    <li><a href="#home" class="active">Home</a></li>
-                    <li><a href="#about">About Us</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropbtn">Service</a>
-                        <div class="dropdown-content">
-                            <a href="#">Routine Check Up/Consultant</a>
-                            <a href="#">Whitening</a>
-                            <a href="#">Braces</a>
-                            <a href="#">Aligner</a>
-                            <a href="#">Dentures</a>
-                            <a href="#">Tooth Filling</a>
-                            <a href="#">Scaling and Polishing</a>
-                            <a href="#">Root Canal Treatment</a>
-                            <a href="#">Crowns and Bridges</a>
-                            <a href="#">x-ray for diagnosis</a>
-                            <a href="#">Tooth Extraction</a>
-                        </div>
-                    </li>
-                    <li><a href="#contact">Contact Us</a></li>
-                </ul>
+</head>
+<body>
+    <div class="navigation-container">
+        <div class="logo-section">
+            <div class="logo">
+                <a class="navbar-logo" href="#">
+                    <img src="../image/logowithoutname.png" alt="Logo" style="width:40px;" class="rounded-pill">
+                </a>
             </div>
-
-            <div class="action-buttons">
-                <button class="btn btn-outline">Login</button>
-            </div>
+            <div class="name">SMILEMAKER</div>
         </div>
 
-        <section>
+        <div class="navigation-bar">
+            <ul>
+                <li><a href=".//HomePage_patient.html">Home</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn active">Service</a>
+                    <div class="dropdown-content">
+                        <a href=".//RoutineCheckUp.html">Routine Check Up/Consultant</a>
+                        <a href=".//Whitening.html">Whitening</a>
+                        <a href=".//braces.html">Braces</a>
+                        <a href=".//Aligner.html">Aligner</a>
+                        <a href=".//Dentures.html">Dentures</a>
+                        <a href=".//Filling.html">Tooth Filling</a>
+                        <a href=".//Cleaning.html">Scaling and Polishing</a>
+                        <a href=".//CanalTreatment.html">Root Canal Treatment</a>
+                        <a href=".//CrownsBridge.html">Crowns and Bridges</a>
+                        <a href=".//Extraction.html">Tooth Extraction</a>
+                    </div>
+                </li>
+                <li><a href="#contact">Contact Us</a></li>
+            </ul>
+        </div>
 
+        <div class="action-button">
+            <button class="btn outlineBtn">Login</button>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="service-header braces-header">
+        <div class="serviceHeader-container">
+            <h1>Professional Teeth Whitening</h1>
+            <p>Brighten your smile with our safe and effective professional whitening treatments for a more confident you.</p>
+            <div class="btn-container">
+                <a href=".//make_appointment.html" class="btn apptBtn"> Make Appointment</a>
+                <a href=".//consultation.html" class="btn consultBtn">Book Consultation</a>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <!-- What's Included Section -->
+        <section class="content-section">
+            <h2 class="section-title">Understanding Dental Braces</h2>
+
+            <div class="twocolContainer">
+                <div>
+                    <p>Dental braces are orthodontic devices used to correct misaligned teeth and jaws. They apply continuous pressure over time to slowly move teeth into their proper positions.</p>
+                        <p>At SmileMaker Dental, we offer various types of braces to suit different needs, preferences, and budgets. Whether you're looking for traditional metal braces or more discreet options, we have solutions for patients of all ages.</p>
+                        <p>Our experienced orthodontists will guide you through the process, from initial consultation to final reveal of your beautiful new smile.</p>
+                </div>
+                <div class="content-image">
+                    <img src="image/braces-1.jpg" alt="Dental Check-Up">
+                </div>
+            </div>
         </section>
 
- <footer class="footer">
-            <div class="footer-container">
+        <!-- Why Important Section -->
+        <section class="content-section">
+            <h2 class="section-title">Types of Braces We Offer</h2>
 
-                <!-- Logo + About -->
-                <div class="footer-logo">
-                    <img src="../image/logoWithoutName.png" alt="Logo" style="width:50px;">
-                    <span>SMILEMAKER</span>
+            <div class="braces-showcase">
+                <!-- Metal Braces -->
+                <div class="brace-card">
+                    <div class="brace-image">
+                        <img src="image/metal-brace.png" alt="Metal Braces">
+                    </div>
+                    <div class="brace-content">
+                        <h3>Metal Braces</h3>
+                        <p>Traditional stainless steel braces that are highly effective for correcting even the most complex dental issues.</p>
+                    </div>
+                </div>
+                
+                <!-- Ceramic Braces -->
+                <div class="brace-card">
+                    <div class="brace-image">
+                        <img src="image/ceramic-braces.jpg" alt="Ceramic Braces">
+                    </div>
+                    <div class="brace-content">
+                        <h3>Ceramic Braces</h3>
+                        <p>Tooth-colored braces that blend with your natural teeth for a more discreet treatment option.</p>
+                    </div>
+                </div>
+                
+                <!-- Lingual Braces -->
+                <div class="brace-card">
+                    <div class="brace-image">
+                        <img src="image/Lingual-braces.jpg" alt="Lingual Braces">
+                    </div>
+                    <div class="brace-content">
+                        <h3>Lingual Braces</h3>
+                        <p>Custom-made braces attached to the back of your teeth, making them completely invisible to others.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+       
+
+         <!-- Comparison Container -->
+        <section class="content-section">
+            <h2 class="section-title">Compare Braces Options</h2>
+            <p class="section-subtitle">Understanding the differences between brace types can help you make an informed decision</p>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Metal Braces</th>
+                        <th>Ceramic Braces</th>
+                        <th>Lingual Braces</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Visibility</td>
+                        <td>Highly visible</td>
+                        <td>Less visible</td>
+                        <td>Completely hidden</td>
+                    </tr>
+                    <tr>
+                        <td>Treatment Duration</td>
+                        <td>18-24 months</td>
+                        <td>18-30 months</td>
+                        <td>20-30 months</td>
+                    </tr>
+                    <tr>
+                        <td>Comfort</td>
+                        <td>May cause irritation</td>
+                        <td>More comfortable than metal</td>
+                        <td>May affect speech initially</td>
+                    </tr>
+                    <tr>
+                        <td>Cost (RM)</td>
+                        <td>6,000 - 9,000</td>
+                        <td>8,000 - 12,000</td>
+                        <td>12,000 - 18,000</td>
+                    </tr>
+                    <tr>
+                        <td>Best For</td>
+                        <td>Complex cases, children</td>
+                        <td>Teens and adults</td>
+                        <td>Adults who want invisible treatment</td>
+                    </tr>
+                    <tr>
+                        <td>Maintenance</td>
+                        <td>Regular adjustments needed</td>
+                        <td>Regular adjustments needed</td>
+                        <td>Specialized cleaning required</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-container">
+            
+             <div class="footer-clinic">
+                    <div class="footer-logo">
+                        <img src="image/logowithnamewhite.png" alt="Logo" style="width:50px;">
+                        <div class="footer-name">SmileMaker Dental</div>
+                    </div>
+                    <p class="footer-intro">
+                        Providing comprehensive healthcare services with compassion and excellence since 2005. Our team of board-certified physicians is dedicated to your wellbeing.
+                    </p>
                 </div>
 
-                <!-- Contact Info -->
-                <div class="footer-contact">
-                    <p><strong>Contact Us</strong></p>
-                    <p>123 Dental Street, City</p>
-                    <p>📞 03-19204819</p>
-                    <p>✉️ SmileMakerDental@gmail.com</p>
-                </div>
-
-                <!-- Quick Links -->
-                <div class="footer-links">
-                    <p><strong>Quick Links</strong></p>
-                    <a href="#home">Home</a>
-                    <a href="#services">Services</a>
-                    <a href="#about">About Us</a>
-                    <a href="#contact">Contact Us</a>
-                </div>
-
+            <!-- Contact Info -->
+            <div class="footer-contact">
+                <p><strong>Contact Us</strong></p>
+                <p>123 Dental Street, City</p>
+                <p>03-19204819</p>
+                <p>SmileMakerDental@gmail.com</p>
             </div>
 
-            <div class="footer-bottom">
-                <p>© 2025 SmileMaker Dental Clinic. All rights reserved.</p>
+            <div class="footer-operation">
+                <h3>Opening Hours</h3>
+                <p>Monday-Friday: 8:00 AM - 6:00 PM</p>
+                <p>Saturday: 9:00 AM - 4:00 PM</p>
+                <p>Sunday: Emergency only</p>
             </div>
-        </footer>
-    </body>
+
+            <!-- Quick Links -->
+            <div class="footer-links">
+                <p><strong>Quick Links</strong></p>
+                <a href=".//HomePage_patient.html">Home</a>
+                <a href="#about">About Us</a>
+                <a href="#services">Services</a>
+                <a href="#contact">Contact Us</a>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 SmileMaker Dental Clinic. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
 </html>
+

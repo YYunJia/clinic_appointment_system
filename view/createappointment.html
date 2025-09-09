@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Appointment - Dental Clinic</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #34495e;
+        }
+        select, input[type="date"], input[type="time"], textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            background-color: white;
+            box-sizing: border-box;
+        }
+        select:focus, input:focus, textarea:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+        .form-row .form-group {
+            flex: 1;
+        }
+        .patient-details {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #ecf0f1;
+            border-radius: 6px;
+            display: none;
+        }
+        .patient-details h4 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        .detail-row {
+            margin-bottom: 8px;
+            display: flex;
+        }
+        .detail-label {
+            font-weight: bold;
+            width: 150px;
+            color: #34495e;
+        }
+        .detail-value {
+            color: #2c3e50;
+        }
+        .error {
+            color: #e74c3c;
+            padding: 15px;
+            background-color: #fadbd8;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+        .success {
+            color: #27ae60;
+            padding: 15px;
+            background-color: #d5f4e6;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+        .loading {
+            color: #3498db;
+            padding: 15px;
+            background-color: #e3f2fd;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+        .submit-section {
+            margin-top: 30px;
+            text-align: center;
+            padding-top: 20px;
+            border-top: 2px solid #ecf0f1;
+        }
+        button {
+            background-color: #27ae60;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 0 10px;
+            min-width: 120px;
+        }
+        button:hover:not(:disabled) {
+            background-color: #229954;
+        }
+        button:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        .cancel-btn {
+            background-color: #95a5a6;
+        }
+        .cancel-btn:hover:not(:disabled) {
+            background-color: #7f8c8d;
+        }
+        .service-details {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            font-size: 14px;
+            display: none;
+        }
+        .required {
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📅 Create New Appointment</h1>
+        
+        <!-- Status messages -->
+        <div id="loading-message" class="loading">
+            🔄 Loading appointment form...
+        </div>
+        
+        <div id="success-message" class="success" style="display: none;"></div>
+        <div id="error-message" class="error" style="display: none;"></div>
+        
+        <!-- Appointment form -->
+        <form id="appointment-form" style="display: none;">
+            <!-- Patient Selection -->
+            <div class="form-group">
+                <label for="patient_select">Select Patient <span class="required">*</span></label>
+                <select id="patient_select" name="patient_id" required>
+                    <option value="">-- Choose a Patient --</option>
+                </select>
+            </div>
+
+            <!-- Patient Details -->
+            <div id="patient-details" class="patient-details">
+                <h4>👤 Patient Information</h4>
+                <div class="detail-row">
+                    <span class="detail-label">Name:</span>
+                    <span class="detail-value" id="detail-name">-</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Email:</span>
+                    <span class="detail-value" id="detail-email">-</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Phone:</span>
+                    <span class="detail-value" id="detail-phone">-</span>
+                </div>
+            </div>
+
+            <!-- Doctor and Service Selection -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="doctor_select">Select Doctor <span class="required">*</span></label>
+                    <select id="doctor_select" name="doctor_id" required>
+                        <option value="">-- Choose a Doctor --</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="service_select">Select Service <span class="required">*</span></label>
+                    <select id="service_select" name="service_id" required>
+                        <option value="">-- Choose a Service --</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Service Details -->
+            <div id="service-details" class="service-details">
+                <strong>Service Information:</strong>
+                <div id="service-info"></div>
+            </div>
+
+            <!-- Date and Time Selection -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="appointment_date">Appointment Date <span class="required">*</span></label>
+                    <input type="date" id="appointment_date" name="appointment_date" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="appointment_time">Appointment Time <span class="required">*</span></label>
+                    <select id="appointment_time" name="appointment_time" required>
+                        <option value="">-- Select Date First --</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Reason/Description -->
+            <div class="form-group">
+                <label for="reason">Reason for Appointment <span class="required">*</span></label>
+                <textarea id="reason" name="reason" placeholder="Please describe the reason for this appointment..." required></textarea>
+            </div>
+
+            <!-- Submit Section -->
+            <div class="submit-section">
+                <button type="button" class="cancel-btn" onclick="resetForm()">Reset Form</button>
+                <button type="submit" id="submit-btn" disabled>Create Appointment</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        let patients = {};
+        let doctors = {};
+        let services = {};
+        let formValid = false;
+
+        // Load data when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadFormData();
+            setupFormValidation();
+            setupEventListeners();
+        });
+
+        async function loadFormData() {
+            try {
+                // Load patients
+                const patientsResponse = await fetch('../api/appointment_api.php?action=get_all_patients');
+                const patientsData = await patientsResponse.json();
+                
+                // Load doctors
+                const doctorsResponse = await fetch('../api/appointment_api.php?action=get_doctors');
+                const doctorsData = await doctorsResponse.json();
+                
+                // Load services
+                const servicesResponse = await fetch('../api/appointment_api.php?action=get_services');
+                const servicesData = await servicesResponse.json();
+                
+                if (patientsData.success && doctorsData.success && servicesData.success) {
+                    // Hide loading message
+                    document.getElementById('loading-message').style.display = 'none';
+                    
+                    // Store data
+                    patients = patientsData.js_patients;
+                    doctors = doctorsData.js_doctors;
+                    services = servicesData.js_services;
+                    
+                    // Populate dropdowns
+                    populateDropdown('patient_select', patientsData.dropdown_patients);
+                    populateDropdown('doctor_select', doctorsData.dropdown_doctors);
+                    populateDropdown('service_select', servicesData.dropdown_services);
+                    
+                    // Set minimum date to today
+                    document.getElementById('appointment_date').min = new Date().toISOString().split('T')[0];
+                    
+                    // Show the form
+                    document.getElementById('appointment-form').style.display = 'block';
+                    
+                } else {
+                    throw new Error('Failed to load form data');
+                }
+                
+            } catch (error) {
+                showError('Error loading form: ' + error.message);
+            }
+        }
+
+        function populateDropdown(selectId, options) {
+            const select = document.getElementById(selectId);
+            const firstOption = select.options[0];
+            select.innerHTML = '';
+            select.appendChild(firstOption);
+            
+            options.forEach(option => {
+                const optionElement = document.createElement('option');
+                optionElement.value = option.value;
+                optionElement.textContent = option.display;
+                select.appendChild(optionElement);
+            });
+        }
+
+        function setupEventListeners() {
+            // Patient selection
+            document.getElementById('patient_select').addEventListener('change', function() {
+                const patientId = this.value;
+                if (patientId && patients[patientId]) {
+                    showPatientDetails(patients[patientId]);
+                } else {
+                    hidePatientDetails();
+                }
+                validateForm();
+            });
+
+            // Service selection
+            document.getElementById('service_select').addEventListener('change', function() {
+                const serviceId = this.value;
+                if (serviceId) {
+                    showServiceDetails(serviceId);
+                } else {
+                    hideServiceDetails();
+                }
+                validateForm();
+            });
+
+            // Date and doctor change
+            document.getElementById('appointment_date').addEventListener('change', updateAvailableTimes);
+            document.getElementById('doctor_select').addEventListener('change', function() {
+                updateAvailableTimes();
+                validateForm();
+            });
+
+            // Time selection
+            document.getElementById('appointment_time').addEventListener('change', validateForm);
+            document.getElementById('reason').addEventListener('input', validateForm);
+
+            // Form submission
+            document.getElementById('appointment-form').addEventListener('submit', submitAppointment);
+        }
+
+        function showPatientDetails(patient) {
+            document.getElementById('detail-name').textContent = patient.name;
+            document.getElementById('detail-email').textContent = patient.email;
+            document.getElementById('detail-phone').textContent = patient.phone_number;
+            document.getElementById('patient-details').style.display = 'block';
+        }
+
+        function hidePatientDetails() {
+            document.getElementById('patient-details').style.display = 'none';
+        }
+
+        function showServiceDetails(serviceId) {
+            const service = services.find(s => s.service_id === serviceId);
+            if (service) {
+                const serviceInfo = `
+                    <div><strong>Category:</strong> ${service.service_category}</div>
+                    <div><strong>Duration:</strong> ${service.duration} minutes</div>
+                    <div><strong>Price:</strong> RM${parseFloat(service.base_price).toFixed(2)}</div>
+                    <div><strong>Description:</strong> ${service.description || 'N/A'}</div>
+                `;
+                document.getElementById('service-info').innerHTML = serviceInfo;
+                document.getElementById('service-details').style.display = 'block';
+            }
+        }
+
+        function hideServiceDetails() {
+            document.getElementById('service-details').style.display = 'none';
+        }
+
+        async function updateAvailableTimes() {
+            const doctorId = document.getElementById('doctor_select').value;
+            const date = document.getElementById('appointment_date').value;
+            const timeSelect = document.getElementById('appointment_time');
+            
+            // Clear time options
+            timeSelect.innerHTML = '<option value="">-- Select Doctor and Date First --</option>';
+            
+            if (doctorId && date) {
+                try {
+                    const response = await fetch(`../api/appointment_api.php?action=get_available_times&doctor_id=${doctorId}&date=${date}`);
+                    const data = await response.json();
+                    
+                    if (data.success && data.available_times.length > 0) {
+                        timeSelect.innerHTML = '<option value="">-- Choose a Time --</option>';
+                        data.available_times.forEach(time => {
+                            const option = document.createElement('option');
+                            option.value = time.value;
+                            option.textContent = time.display;
+                            timeSelect.appendChild(option);
+                        });
+                    } else {
+                        timeSelect.innerHTML = '<option value="">-- No Available Times --</option>';
+                    }
+                } catch (error) {
+                    console.error('Error loading available times:', error);
+                    timeSelect.innerHTML = '<option value="">-- Error Loading Times --</option>';
+                }
+            }
+            
+            validateForm();
+        }
+
+        function setupFormValidation() {
+            validateForm();
+        }
+
+        function validateForm() {
+            const patientId = document.getElementById('patient_select').value;
+            const doctorId = document.getElementById('doctor_select').value;
+            const serviceId = document.getElementById('service_select').value;
+            const date = document.getElementById('appointment_date').value;
+            const time = document.getElementById('appointment_time').value;
+            const reason = document.getElementById('reason').value.trim();
+            
+            formValid = patientId && doctorId && serviceId && date && time && reason;
+            document.getElementById('submit-btn').disabled = !formValid;
+        }
+
+        async function submitAppointment(event) {
+            event.preventDefault();
+            
+            if (!formValid) {
+                showError('Please fill in all required fields');
+                return;
+            }
+            
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Creating...';
+            
+            try {
+                const formData = new FormData(document.getElementById('appointment-form'));
+                formData.append('action', 'create_appointment');
+                
+                const response = await fetch('../api/appointment_api.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showSuccess(`Appointment created successfully! Appointment ID: ${data.appointment_id}`);
+                    resetForm();
+                } else {
+                    throw new Error(data.message);
+                }
+                
+            } catch (error) {
+                showError('Error creating appointment: ' + error.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Create Appointment';
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('appointment-form').reset();
+            hidePatientDetails();
+            hideServiceDetails();
+            document.getElementById('appointment_time').innerHTML = '<option value="">-- Select Date First --</option>';
+            document.getElementById('appointment_date').min = new Date().toISOString().split('T')[0];
+            hideMessages();
+            validateForm();
+        }
+
+        function showSuccess(message) {
+            hideMessages();
+            const successDiv = document.getElementById('success-message');
+            successDiv.textContent = '✓ ' + message;
+            successDiv.style.display = 'block';
+            successDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showError(message) {
+            hideMessages();
+            const errorDiv = document.getElementById('error-message');
+            errorDiv.textContent = '✗ ' + message;
+            errorDiv.style.display = 'block';
+            errorDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function hideMessages() {
+            document.getElementById('success-message').style.display = 'none';
+            document.getElementById('error-message').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

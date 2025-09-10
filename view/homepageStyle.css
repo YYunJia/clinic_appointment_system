@@ -25,6 +25,7 @@ body {
     align-items: center;
     justify-content: space-between;
     margin: 0 auto;
+    margin-top: 10px;
 }
 
 .logo-section {
@@ -271,24 +272,27 @@ body {
     background: url("/clinic_appointment_system/view/image/braces.jpg") no-repeat center center;
     background-size: cover;
 }
-.aligner-header::before{
 
-}
 .dentures-header::before{
-
+    background: url("/clinic_appointment_system/view/image/dentures-header.jpg") no-repeat center center;
+    background-size: cover;
 }
 .filling-header::before{
-
+    background: url("/clinic_appointment_system/view/image/filling-header.jpg") no-repeat center center;
+    background-size: cover;
 }
 .cleaning-header::before{
-
+    background: url("/clinic_appointment_system/view/image/cleaning-header.jpg") no-repeat center center;
+    background-size: cover;
 }
 .canal-header ::before{
-
+    background: url("/clinic_appointment_system/view/image/treatment-headers.jpg") no-repeat center center;
+    background-size: cover;
 }
 
 .bridge-header ::before{
-
+    background: url("/clinic_appointment_system/view/image/bridge-header.png") no-repeat center center;
+    background-size: cover;
 }
 .extraction-header ::before{
 
@@ -418,6 +422,13 @@ body {
     margin-top: 40px;
 }
 
+.bridge-process-steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    margin-top: 40px;
+}
+
 .step-card {
     background: #F6F6F6;
     padding: 25px;
@@ -440,77 +451,76 @@ body {
     font-size: 30px;
 }
 /* Braces Showcase */
-.braces-showcase {
+.optionsContainer {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: 25px;
     margin-top: 40px;
 }
 
-.brace-card {
+.fillingContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 25px;
+    margin-top: 40px;
+}
+
+.optionsCard {
     background: #F6F6F6;
     border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
     transition: transform 0.3s ease;
 }
 
-.brace-card:hover {
-    transform: translateY(-10px);
-}
-
-.brace-image {
-    height: 200px;
+.options-img {
+    height: 250px;
     overflow: hidden;
 }
 
-.brace-image img {
+.options-img img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-.brace-content {
+.options-content {
     padding: 20px;
 }
 
-.brace-content h3 {
+.options-content h3 {
     font-size: 20px;
     color: #2a368e;
     margin-bottom: 10px;
 }
 
-.brace-content p {
+.options-content p {
     color: #666;
     font-size: 15px;
 }
 /* Comparison Table */
-.comparison-table {
+.option-table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 30px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     border-radius: 10px;
     overflow: hidden;
 }
 
-.comparison-table th, .comparison-table td {
+.option-table th, .option-table td {
     padding: 15px 20px;
     text-align: left;
     border-bottom: 1px solid #e6f2ff;
 }
 
-.comparison-table th {
+.option-table th {
     background: #2a368e;
     color: white;
     font-weight: 600;
 }
 
-.comparison-table tr:last-child td {
+.option-tablee tr:last-child td {
     border-bottom: none;
 }
 
-.comparison-table tr:hover {
-    background: #f5f9ff;
-}
+
 

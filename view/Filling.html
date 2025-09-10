@@ -1,91 +1,219 @@
 <!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
--->
+
 <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>SmileMaker Dental</title>
-        <link rel="stylesheet" href=".//homepageStyle.css">
-       
-    </head>
-    <body>
-        <div class="navigation-container">
-            <div class="logo-section">
-                <div class="logo">
-                    <a class="navbar-logo" href="#">
-                        <img src="../image/logowithoutname.png" alt="Logo" style="width:40px;" class="rounded-pill">
-                    </a>
-                </div>
-                <div class="name">SMILEMAKER</div>
-            </div>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tooth Filling</title>
+    <link rel="stylesheet" href=".//homepageStyle.css">
+    <link rel="stylesheet" href="fontawesome/css/fontawesome.min.css">
+    <link rel="stylesheet" href="fontawesome/css/all.min.css">
 
-            <div class="navigation-bar">
-                <ul>
-                    <li><a href="#home" class="active">Home</a></li>
-                    <li><a href="#about">About Us</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropbtn">Service</a>
-                        <div class="dropdown-content">
-                            <a href="#">Routine Check Up/Consultant</a>
-                            <a href="#">Whitening</a>
-                            <a href="#">Braces</a>
-                            <a href="#">Aligner</a>
-                            <a href="#">Dentures</a>
-                            <a href="#">Tooth Filling</a>
-                            <a href="#">Scaling and Polishing</a>
-                            <a href="#">Root Canal Treatment</a>
-                            <a href="#">Crowns and Bridges</a>
-                            <a href="#">x-ray for diagnosis</a>
-                            <a href="#">Tooth Extraction</a>
-                        </div>
-                    </li>
-                    <li><a href="#contact">Contact Us</a></li>
-                </ul>
+</head>
+<body>
+    <div class="navigation-container">
+        <div class="logo-section">
+            <div class="logo">
+                <a class="navbar-logo" href="#">
+                    <img src="../image/logowithoutname.png" alt="Logo" style="width:40px;" class="rounded-pill">
+                </a>
             </div>
-
-            <div class="action-buttons">
-                <button class="btn btn-outline">Login</button>
-            </div>
+            <div class="name">SMILEMAKER</div>
         </div>
 
-        <section>
+        <div class="navigation-bar">
+            <ul>
+                <li><a href=".//HomePage_patient.html">Home</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn active">Service</a>
+                    <div class="dropdown-content">
+                        <a href=".//RoutineCheckUp.html">Routine Check Up/Consultant</a>
+                        <a href=".//Whitening.html">Whitening</a>
+                        <a href=".//braces.html">Braces</a>
+                        <a href=".//Dentures.html">Dentures</a>
+                        <a href=".//Filling.html">Tooth Filling</a>
+                        <a href=".//Cleaning.html">Scaling and Polishing</a>
+                        <a href=".//CanalTreatment.html">Root Canal Treatment</a>
+                        <a href=".//CrownsBridges.html">Crowns and Bridges</a>
+                        <a href=".//Extraction.html">Tooth Extraction</a>
+                    </div>
+                </li>
+                <li><a href="#contact">Contact Us</a></li>
+            </ul>
+        </div>
 
+        <div class="action-button">
+            <button class="btn outlineBtn">Login</button>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="service-header filling-header">
+        <div class="serviceHeader-container">
+            <h1>Tooth Filling Services</h1>
+            <p>Professional tooth filling treatments to restore your teeth and prevent further decay. Our dental experts use high-quality materials to ensure long-lasting results.</p>
+            <div class="btn-container">
+                <a href=".//make_appointment.html" class="btn apptBtn"> Make Appointment</a>
+                <a href=".//consultation.html" class="btn consultBtn">Book Consultation</a>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <!-- What's Included Section -->
+        <section class="content-section">
+            <h2 class="section-title">What are Tooth Fillings?</h2>
+
+            <div class="twocolContainer">
+                <div>
+                 <p>A tooth filling is a dental procedure used to repair minor to moderate tooth decay or damage. It involves removing the decayed portion of the tooth and filling the space with a durable material.</p>
+                    <p>Fillings help to restore the tooth's structure, prevent further decay, and maintain proper dental function. At SmileMaker Dental, we offer several types of fillings to match your needs and budget.</p>
+                    <p>If you're experiencing tooth sensitivity, pain when biting, or visible holes in your teeth, you may need a filling. Early treatment can prevent more extensive dental work later.</p>
+                </div>
+                <div class="content-image">
+                    <img src="image/filling.jpg" alt="Dental Check-Up">
+                </div>
+            </div>
+        </section>
+        
+        <section class="content-section">
+            <h2 class="section-title">Types of Fillings We Offer</h2>
+
+            <div class="fillingContainer">
+                <!-- Metal Braces -->
+                <div class="optionsCard">
+                    <div class="options-img">
+                        <img src="image/composite-filling.jpg" alt="Composite Fillings">
+                    </div>
+                    <div class="options-content">
+                        <h3>Composite Fillings</h3>
+                        <p>Tooth-colored fillings that blend seamlessly with your natural teeth. Ideal for visible areas.</p>
+                    </div>
+                </div>
+                
+                <!-- Ceramic Braces -->
+                <div class="optionsCard">
+                    <div class="options-img">
+                        <img src="image/Ceramic-Filling.jpg" alt="Ceramic Fillings">
+                    </div>
+                    <div class="options-content">
+                        <h3>Ceramic Fillings</h3>
+                        <p>Durable, stain-resistant porcelain fillings that match your tooth's natural appearance.</p>
+                    </div>
+                </div>
+                
+                <!-- Lingual Braces -->
+                <div class="optionsCard">
+                    <div class="options-img">
+                        <img src="image/Glass-Ionomer.jpg" alt="Glass Ionomer">
+                    </div>
+                    <div class="options-content">
+                        <h3>Glass Ionomer</h3>
+                        <p>Releases fluoride to protect against further decay. Often used for children's teeth.</p>
+                    </div>
+                </div>
+            </div>
         </section>
 
- <footer class="footer">
-            <div class="footer-container">
+        <!-- Why Important Section -->
+        <section class="content-section">
+            <h2 class="section-title">Benefits of Tooth Fillings</h2>
 
-                <!-- Logo + About -->
-                <div class="footer-logo">
-                    <img src="../image/logoWithoutName.png" alt="Logo" style="width:50px;">
-                    <span>SMILEMAKER</span>
+            <div class="twocolContainer">
+                <div class="content-image">
+                    <img src="image/filling-benefit.jpg" alt="Dental Examination">
+                </div>
+                <div>
+                    <ul class="benefits-list">
+                        <li><i class="fas fa-shield-alt"></i> <strong>Prevents Further Decay</strong> - Fillings seal off spaces where bacteria can enter, preventing additional decay.</li>
+                        <li><i class="fas fa-hand-holding"></i>    <strong>Restores Function</strong> – Allows you to chew comfortably without pain or sensitivity.</li>
+                        <li><i class="fas fa-star"></i> <strong>Aesthetic Appeal</strong> – Modern fillings are virtually invisible, matching your natural tooth color.</li>
+                        <li><i class="fas fa-piggy-bank"></i> <strong>Cost-Effective</strong> – Filling cavities early prevents the need for more extensive treatments like root canals or crowns.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Process Section -->
+        <section class="content-section">
+            <h2 class="section-title">The Filling Process</h2>
+
+            <div class="process-steps">
+                <div class="step-card">
+                    <h1 class="numbers">&#49;</h1>
+                     <h3>Examination</h3>
+                    <p>We examine your teeth and take X-rays to assess the extent of decay.</p>
                 </div>
 
-                <!-- Contact Info -->
-                <div class="footer-contact">
-                    <p><strong>Contact Us</strong></p>
-                    <p>123 Dental Street, City</p>
-                    <p>📞 03-19204819</p>
-                    <p>✉️ SmileMakerDental@gmail.com</p>
+                <div class="step-card">
+                    <h1 class="numbers">&#50;</h1>
+                    <h3>Anesthesia</h3>
+                    <p>Local anesthesia is applied to ensure a pain-free experience.</p>
                 </div>
 
-                <!-- Quick Links -->
-                <div class="footer-links">
-                    <p><strong>Quick Links</strong></p>
-                    <a href="#home">Home</a>
-                    <a href="#services">Services</a>
-                    <a href="#about">About Us</a>
-                    <a href="#contact">Contact Us</a>
+                <div class="step-card">
+                    <h1 class="numbers">&#51;</h1>
+                    <h3>Decay Removal</h3>
+                    <p>The decayed portion of the tooth is carefully removed.</p>
                 </div>
 
+                <div class="step-card">
+                    <h1 class="numbers">&#52;</h1>
+                    <h3>Filling Placement</h3>
+                    <p>The filling material is applied and shaped to match your tooth.</p>
+                </div>
+                
+                <div class="step-card">
+                    <h1 class="numbers">&#53;</h1>
+                    <h3>Polishing</h3>
+                    <p>The filling is polished for a smooth, natural finish.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-container">
+            
+             <div class="footer-clinic">
+                    <div class="footer-logo">
+                        <img src="image/logowithnamewhite.png" alt="Logo" style="width:50px;">
+                        <div class="footer-name">SmileMaker Dental</div>
+                    </div>
+                    <p class="footer-intro">
+                        Providing comprehensive healthcare services with compassion and excellence since 2005. Our team of board-certified physicians is dedicated to your wellbeing.
+                    </p>
+                </div>
+
+            <!-- Contact Info -->
+            <div class="footer-contact">
+                <p><strong>Contact Us</strong></p>
+                <p>123 Dental Street, City</p>
+                <p>03-19204819</p>
+                <p>SmileMakerDental@gmail.com</p>
             </div>
 
-            <div class="footer-bottom">
-                <p>© 2025 SmileMaker Dental Clinic. All rights reserved.</p>
+            <div class="footer-operation">
+                <h3>Opening Hours</h3>
+                <p>Monday - Friday: 8:00 AM - 6:00 PM</p>
+                <p>Saturday - Sunday: 9:00 AM - 8:00 PM</p>
             </div>
-        </footer>
-    </body>
+
+            <!-- Quick Links -->
+            <div class="footer-links">
+                <p><strong>Quick Links</strong></p>
+                <a href=".//HomePage_patient.html">Home</a>
+                <a href="#about">About Us</a>
+                <a href="#services">Services</a>
+                <a href="#contact">Contact Us</a>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 SmileMaker Dental Clinic. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
 </html>
 

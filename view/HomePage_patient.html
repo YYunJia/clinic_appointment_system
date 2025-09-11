@@ -5,6 +5,64 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>SmileMaker Dental</title>
         <link rel="stylesheet" href=".//homepageStyle.css">
+        <link rel="stylesheet" href="fontawesome/css/all.min.css">
+        <style>
+            .auth-buttons {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+            }
+
+            .user-menu {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+            }
+
+            .btn {
+                padding: 8px 16px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 14px;
+                transition: all 0.3s ease;
+            }
+
+            .btn-outline {
+                background: transparent;
+                border: 2px solid #667eea;
+                color: #667eea;
+            }
+
+            .btn-outline:hover {
+                background: #667eea;
+                color: white;
+            }
+
+            .btn-primary {
+                background: #667eea;
+                color: white;
+            }
+
+            .btn-primary:hover {
+                background: #5a6fd8;
+            }
+
+            .btn-danger {
+                background: #dc3545;
+                color: white;
+            }
+
+            .btn-danger:hover {
+                background: #c82333;
+            }
+
+            .btn i {
+                margin-right: 5px;
+            }
+        </style>
 
     </head>
     <body>
@@ -42,11 +100,27 @@
             </div>
 
             <div class="action-buttons">
-                <button class="btn btn-outline">Login</button>
+                <!-- Login State (when user is not logged in) -->
+                <div id="login-state" class="auth-buttons">
+                    <button class="btn btn-outline" onclick="window.location.href = 'login.html'">Login</button>
+                    <button class="btn btn-primary" onclick="window.location.href = 'register_patient.html'">Register</button>
+                </div>
+
+                <!-- Logged In State (when user is logged in) -->
+                <div id="logged-in-state" class="auth-buttons" style="display: none;">
+                    <div class="user-menu">
+                        <button class="btn btn-outline" id="username-btn" onclick="window.location.href = 'profile.html'">
+                            <i class="fas fa-user"></i> <span id="username-text">Username</span>
+                        </button>
+                        <button class="btn btn-danger" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
-        
-        
+
+
 
 
         <footer class="footer">
@@ -81,6 +155,74 @@
                 <p>© 2025 SmileMaker Dental Clinic. All rights reserved.</p>
             </div>
         </footer>
+
+        <script>
+            // Check if user is logged in and update UI accordingly
+            function checkLoginStatus() {
+                const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+                const username = sessionStorage.getItem('username');
+                const userType = sessionStorage.getItem('userType'); 
+
+                if (isLoggedIn && username) {
+                    // Show logged in state
+                    document.getElementById('login-state').style.display = 'none';
+                    document.getElementById('logged-in-state').style.display = 'block';
+                    document.getElementById('username-text').textContent = username;
+
+                    // Update profile link based on user type
+                    const profileBtn = document.getElementById('username-btn');
+                    if (userType === 'admin') {
+                        profileBtn.onclick = () => window.location.href = '../view/admin_dashboard.html';
+                    } else if (userType === 'doctor') {
+                        profileBtn.onclick = () => window.location.href = '../view/doctor_dashboard.html';
+                    } else {
+                        profileBtn.onclick = () => window.location.href = '../view/profile.html?username=' + encodeURIComponent(username);
+                    }
+                } else {
+                    // Show login state
+                    document.getElementById('login-state').style.display = 'block';
+                    document.getElementById('logged-in-state').style.display = 'none';
+                }
+            }
+
+            // Logout function
+            function logout() {
+                sessionStorage.removeItem('isLoggedIn');
+                sessionStorage.removeItem('username');
+                sessionStorage.removeItem('userType');
+                sessionStorage.removeItem('userId');
+                window.location.href = '../auth/logout.php';
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                const urlParams = new URLSearchParams(window.location.search);
+                const loginSuccess = urlParams.get('login');
+                const logoutSuccess = urlParams.get('logout');
+                const username = urlParams.get('username');
+                const userType = urlParams.get('role'); // your PHP sends `&role=...`, but it's really user_type
+
+                if (loginSuccess === 'success' && username && userType) {
+                    sessionStorage.setItem('isLoggedIn', 'true');
+                    sessionStorage.setItem('username', username);
+                    sessionStorage.setItem('userType', userType);
+
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                } else if (logoutSuccess === 'success') {
+                    sessionStorage.clear();
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                }
+
+                checkLoginStatus();
+            });
+
+            // React to login/logout in other tabs
+            window.addEventListener('storage', function (e) {
+                if (e.key === 'isLoggedIn') {
+                    checkLoginStatus();
+                }
+            });
+        </script>
+
 
     </body>
 </html>

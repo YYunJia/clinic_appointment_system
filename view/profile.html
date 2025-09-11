@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Profile - Dental Clinic</title>
+        <link rel="stylesheet" href="fontawesome/css/all.min.css">
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                min-height: 100vh;
+                padding: 2rem 0;
+            }
+
+            .profile-container {
+                background: white;
+                padding: 2rem;
+                border-radius: 15px;
+                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+                width: 100%;
+                max-width: 600px;
+                margin: 0 auto;
+            }
+
+            .profile-header {
+                text-align: center;
+                margin-bottom: 2rem;
+                padding-bottom: 1rem;
+                border-bottom: 2px solid #f0f0f0;
+            }
+
+            .profile-header h1 {
+                color: #333;
+                font-size: 2rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .profile-header p {
+                color: #666;
+                font-size: 0.9rem;
+            }
+
+            .user-info {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+                margin-bottom: 2rem;
+            }
+
+            .info-item {
+                background: #f8f9fa;
+                padding: 1rem;
+                border-radius: 8px;
+            }
+
+            .info-label {
+                font-weight: 600;
+                color: #333;
+                margin-bottom: 0.25rem;
+            }
+
+            .info-value {
+                color: #666;
+            }
+
+            .form-section {
+                margin-bottom: 2rem;
+            }
+
+            .form-section h3 {
+                color: #333;
+                margin-bottom: 1rem;
+                padding-bottom: 0.5rem;
+                border-bottom: 1px solid #e0e0e0;
+            }
+
+            .form-group {
+                margin-bottom: 1.5rem;
+            }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 0.5rem;
+                color: #333;
+                font-weight: 500;
+            }
+
+            .form-group input {
+                width: 100%;
+                padding: 12px 15px;
+                border: 2px solid #e1e5e9;
+                border-radius: 8px;
+                font-size: 1rem;
+                transition: border-color 0.3s ease;
+            }
+
+            .form-group input:focus {
+                outline: none;
+                border-color: #667eea;
+            }
+
+            .btn {
+                padding: 12px 24px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                border: none;
+                border-radius: 8px;
+                font-size: 1rem;
+                font-weight: 600;
+                cursor: pointer;
+                transition: transform 0.2s ease;
+                margin-right: 1rem;
+            }
+
+            .btn:hover {
+                transform: translateY(-2px);
+            }
+
+            .btn:active {
+                transform: translateY(0);
+            }
+
+            .btn-secondary {
+                background: #6c757d;
+            }
+
+            .btn-danger {
+                background: #dc3545;
+            }
+
+            .alert {
+                padding: 12px 15px;
+                border-radius: 8px;
+                margin-bottom: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .alert-success {
+                background-color: #d4edda;
+                color: #155724;
+                border: 1px solid #c3e6cb;
+            }
+
+            .alert-error {
+                background-color: #f8d7da;
+                color: #721c24;
+                border: 1px solid #f5c6cb;
+            }
+
+            .password-requirements {
+                background: #f8f9fa;
+                padding: 1rem;
+                border-radius: 8px;
+                margin-top: 0.5rem;
+                font-size: 0.8rem;
+                color: #666;
+            }
+
+            .password-requirements h4 {
+                margin-bottom: 0.5rem;
+                color: #333;
+            }
+
+            .password-requirements ul {
+                margin-left: 1rem;
+            }
+
+            .password-requirements li {
+                margin-bottom: 0.25rem;
+            }
+
+            .logout-section {
+                text-align: center;
+                margin-top: 2rem;
+                padding-top: 2rem;
+                border-top: 2px solid #f0f0f0;
+            }
+
+            @media (max-width: 600px) {
+                .user-info {
+                    grid-template-columns: 1fr;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="profile-container">
+            <div class="profile-header">
+                <h1><i class="fas fa-user"></i> User Profile</h1>
+                <p>Manage your account information</p>
+            </div>
+
+            <!-- Flash messages will be handled by JavaScript or server-side processing -->
+
+            <!-- User data will be populated by JavaScript or server-side processing -->
+            <div class="user-info">
+                <div class="info-item">
+                    <div class="info-label">User ID</div>
+                    <div class="info-value" id="user-id">Loading...</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Role</div>
+                    <div class="info-value" id="user-role">Loading...</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Username</div>
+                    <div class="info-value" id="username">Loading...</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Email</div>
+                    <div class="info-value" id="email">Loading...</div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3><i class="fas fa-edit"></i> Update Profile Information</h3>
+                <form method="POST" action="profile.php">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone_number">Phone Number</label>
+                        <input type="tel" id="phone_number" name="phone_number">
+                    </div>
+
+                    <button type="submit" class="btn">
+                        <i class="fas fa-save"></i> Update Profile
+                    </button>
+                </form>
+            </div>
+
+            <div class="form-section">
+                <h3><i class="fas fa-lock"></i> Change Password</h3>
+                <form method="POST" action="../auth/profile.php">
+                    <div class="form-group">
+                        <label for="current_password">Current Password</label>
+                        <input type="password" id="current_password" name="current_password" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="new_password">New Password</label>
+                        <input type="password" id="new_password" name="new_password" required>
+                        <div class="password-requirements">
+                            <h4>Password Requirements:</h4>
+                            <ul>
+                                <li>At least 8 characters long</li>
+                                <li>Contains uppercase letter</li>
+                                <li>Contains lowercase letter</li>
+                                <li>Contains number</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm_password">Confirm New Password</label>
+                        <input type="password" id="confirm_password" name="confirm_password" required>
+                    </div>
+
+                    <button type="submit" class="btn">
+                        <i class="fas fa-key"></i> Change Password
+                    </button>
+                </form>
+            </div>
+
+            <div class="logout-section">
+                <a href="../auth/logout.php" class="btn btn-danger">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+
+                <!-- Dashboard links will be shown based on user role -->
+                <a href="admin_dashboard.html" class="btn btn-secondary" id="admin-dashboard" style="display: none;">
+                    <i class="fas fa-tachometer-alt"></i> Admin Dashboard
+                </a>
+                <a href="doctor_dashboard.html" class="btn btn-secondary" id="doctor-dashboard" style="display: none;">
+                    <i class="fas fa-stethoscope"></i> Doctor Dashboard
+                </a>
+                <a href="patient_dashboard.html" class="btn btn-secondary" id="patient-dashboard" style="display: none;">
+                    <i class="fas fa-user-injured"></i> Patient Dashboard
+                </a>
+            </div>
+            <!-- End of user data section -->
+        </div>
+    </body>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const params = new URLSearchParams(window.location.search);
+            const username = params.get("username");
+
+            if (!username) {
+                console.error("❌ No username in URL");
+                return;
+            }
+
+            fetch("../auth/get_user.php?username=" + username)
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log("🔎 Response from PHP:", data);
+
+                        if (data.success) {
+                            document.getElementById("user-id").textContent = data.user.user_id;
+                            document.getElementById("user-role").textContent = data.user.user_type;
+                            document.getElementById("username").textContent = data.user.username;
+                            document.getElementById("email").textContent = data.user.email;
+
+                            // Fill editable fields
+                            document.getElementById("name").value = data.user.name || "";
+                            document.getElementById("phone_number").value = data.user.phone_number || "";
+
+                            // Show role-specific dashboard link
+                            if (data.user.user_type === "admin") {
+                                document.getElementById("admin-dashboard").style.display = "inline-block";
+                            } else if (data.user.user_type === "doctor") {
+                                document.getElementById("doctor-dashboard").style.display = "inline-block";
+                            } else {
+                                document.getElementById("patient-dashboard").style.display = "inline-block";
+                            }
+                        } else {
+                            alert("❌ " + data.message);
+                        }
+                    })
+                    .catch(err => console.error("⚠️ Fetch error:", err));
+        });
+    </script>
+
+
+</html>

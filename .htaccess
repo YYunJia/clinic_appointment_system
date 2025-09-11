@@ -1,0 +1,20 @@
+# Enable URL rewriting
+RewriteEngine On
+
+# Allow access to HTML files
+<Files "*.html">
+    Order allow,deny
+    Allow from all
+</Files>
+
+# Allow access to PHP files
+<Files "*.php">
+    Order allow,deny
+    Allow from all
+</Files>
+
+# Set default directory index
+DirectoryIndex index.php index.html
+
+# Enable error pages
+ErrorDocument 404 /clinic_appointment_system/view/HomePage_patient.html

@@ -41,6 +41,46 @@ class AuthenticationController {
         }
     }
 
+    public function registerDoctor() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: ../view/register_doctor.html');
+            exit;
+        }
+
+        try {
+            // Collect form data including specialization and license_number
+            $data = [
+                'name' => trim($_POST['name'] ?? ''),
+                'username' => trim($_POST['username'] ?? ''),
+                'email' => trim($_POST['email'] ?? ''),
+                'password' => $_POST['password'] ?? '',
+                'phone_number' => trim($_POST['phone_number'] ?? ''),
+                'specialization' => trim($_POST['specialization'] ?? ''),
+                'license_number' => trim($_POST['license_number'] ?? '')
+            ];
+
+            // Get admin ID from session (only admin can register doctor)
+            session_start();
+            $adminId = $_SESSION['user_id'] ?? null;
+            if (!$adminId) {
+                throw new Exception("Admin login required to register doctor");
+            }
+
+            $result = $this->authService->registerDoctor($data, $adminId);
+
+            if ($result['success']) {
+                header('Location: ../view/login.html?success=1');
+                exit;
+            } else {
+                header('Location: ../view/register_doctor.html?error=' . urlencode($result['message']));
+                exit;
+            }
+        } catch (Exception $e) {
+            header('Location: ../view/register_doctor.html?error=' . urlencode($e->getMessage()));
+            exit;
+        }
+    }
+
     // Handle user login
     public function login() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

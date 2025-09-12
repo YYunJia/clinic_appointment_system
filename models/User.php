@@ -1,9 +1,10 @@
 <?php
+
 require_once __DIR__ . '/../database.php';
 
 class User {
-    private $conn;
 
+    private $conn;
     public $user_id;
     public $username;
     public $password_hash;
@@ -24,10 +25,21 @@ class User {
     }
 
     // Getters
-    public function getUserId() { return $this->user_id; }
-    public function getUsername() { return $this->username; }
-    public function getUserType() { return $this->user_type; }
-    public function getPasswordHash() { return $this->password_hash; }
+    public function getUserId() {
+        return $this->user_id;
+    }
+
+    public function getUsername() {
+        return $this->username;
+    }
+
+    public function getUserType() {
+        return $this->user_type;
+    }
+
+    public function getPasswordHash() {
+        return $this->password_hash;
+    }
 
     // Convert to array for events
     public function toArray() {
@@ -60,9 +72,9 @@ class User {
     // Create a new user
     public function create($data) {
         $stmt = $this->conn->prepare("
-            INSERT INTO users (user_id, username, password_hash, email, name, phone_number, user_type)
-            VALUES (:user_id, :username, :password_hash, :email, :name, :phone_number, :user_type)
-        ");
+        INSERT INTO users (user_id, username, password_hash, email, name, phone_number, user_type)
+        VALUES (:user_id, :username, :password_hash, :email, :name, :phone_number, :user_type)
+    ");
 
         $stmt->bindParam(':user_id', $data['user_id']);
         $stmt->bindParam(':username', $data['username']);
@@ -72,7 +84,11 @@ class User {
         $stmt->bindParam(':phone_number', $data['phone_number']);
         $stmt->bindParam(':user_type', $data['user_type']);
 
-        return $stmt->execute() ? $data['user_id'] : false;
+        if ($stmt->execute()) {
+            return $data['user_id']; // return ID (string)
+        }
+
+        return false;
     }
 
     // Find user by ID
@@ -108,11 +124,13 @@ class User {
 
     // Update user
     public function update($data) {
-        if (!isset($this->user_id)) return false;
+        if (!isset($this->user_id))
+            return false;
 
         $fields = [];
         foreach ($data as $key => $value) {
-            if ($key !== 'user_id') $fields[] = "$key = :$key";
+            if ($key !== 'user_id')
+                $fields[] = "$key = :$key";
         }
 
         $sql = "UPDATE users SET " . implode(", ", $fields) . " WHERE user_id = :user_id";

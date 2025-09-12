@@ -4,37 +4,38 @@ require_once __DIR__ . '/../models/Service.php';
 
 class ServiceController {
 
-    private $service;
-
-    public function __construct() {
-        $this->service = new Service;
-    }
-
-    public function getServices() {
-        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            $data = $this->service->getServices();
-
-            header('Content-Type:application/json');
-            if ($data === false) {
-                echo json_encode(['error' =>'No service found']);
-            } else{
-                echo json_encode($data);
-            }
+    public function getAllServices() {
+        $serviceModel = new Service();
+        $services = $serviceModel->getServices();
+        header('Content-Type: application/json');
+        if ($services === false) {
+            echo json_encode(['error' => 'No service list found']);
+        } else {
+            echo json_encode($services);
         }
     }
     
-    public function getServicesByid() {
-        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            $data = $this->service->getServices();
-
-            header('Content-Type:application/json');
-            if ($data === false) {
-                echo json_encode(['error' =>'No service found']);
-            } else{
-                echo json_encode($data);
-            }
+    public function getDetailByCategory($serviceCategory)
+    {
+        $serviceModel = new Service();
+        $services = $serviceModel->getServicesByCategory($serviceCategory);
+        header('Content-Type: application/json');
+        if ($services === false) {
+            echo json_encode(['error' => 'No service detail found for the category']);
+        } else {
+            echo json_encode($services);
         }
     }
-    
-    
+
+    public function getServiceDetail($serviceId)
+    {
+        $serviceModel = new Service();
+        $services = $serviceModel->getServicesById($serviceId);
+        header('Content-Type: application/json');
+        if ($services === false) {
+            echo json_encode(['error' => 'No service detail found']);
+        } else {
+            echo json_encode($services);
+        }
+    }
 }

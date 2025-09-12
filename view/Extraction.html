@@ -42,8 +42,24 @@
             </ul>
         </div>
 
-        <div class="action-button">
-            <button class="btn outlineBtn">Login</button>
+        <div class="action-buttons">
+            <!-- Login State -->
+            <div id="login-state" class="auth-buttons">
+                <button class="btn outlineBtn" onclick="window.location.href = 'login.html'">Login</button>
+                <button class="btn btn-primary" onclick="window.location.href = 'register_patient.html'">Register</button>
+            </div>
+
+            <!-- Logged In State -->
+            <div id="logged-in-state" class="auth-buttons" style="display: none;">
+                <div class="user-menu">
+                    <button class="btn outlineBtn" id="username-btn" onclick="window.location.href = 'profile.html'">
+                        <i class="fas fa-user"></i> <span id="username-text">Username</span>
+                    </button>
+                    <button class="btn btn-danger" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -53,8 +69,8 @@
             <h1>Tooth Extraction Services</h1>
             <p>Safe and comfortable tooth extraction procedures performed by our experienced dental surgeons. We prioritize your comfort and ensure minimal discomfort during the process.</p>
             <div class="btn-container">
-                <a href=".//make_appointment.html" class="btn apptBtn"> Make Appointment</a>
-                <a href=".//consultation.html" class="btn consultBtn">Book Consultation</a>
+                <a href=".//book_appointment.html?service_category=Surgical&book_type=appointment" class="btn apptBtn"> Make Appointment</a>
+                <a href=".//consultation.html?service_category=Surgical&book_type=consultation" class="btn consultBtn">Book Consultation</a>
             </div>
         </div>
     </section>
@@ -173,6 +189,62 @@
             <p>&copy; 2025 SmileMaker Dental Clinic. All rights reserved.</p>
         </div>
     </footer>
+    <script>
+        function checkLoginStatus() {
+            const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+            const username = sessionStorage.getItem('username');
+            const userType = sessionStorage.getItem('userType'); 
+
+            if (isLoggedIn && username) {
+                document.getElementById('login-state').style.display = 'none';
+                document.getElementById('logged-in-state').style.display = 'block';
+                document.getElementById('username-text').textContent = username;
+
+                const profileBtn = document.getElementById('username-btn');
+                if (userType === 'admin') {
+                    profileBtn.onclick = () => window.location.href = '../view/admin_dashboard.html';
+                } else if (userType === 'doctor') {
+                    profileBtn.onclick = () => window.location.href = '../view/doctor_dashboard.html';
+                } else {
+                    profileBtn.onclick = () => window.location.href = '../view/profile.html?username=' + encodeURIComponent(username);
+                }
+            } else {
+                document.getElementById('login-state').style.display = 'block';
+                document.getElementById('logged-in-state').style.display = 'none';
+            }
+        }
+
+        function logout() {
+            sessionStorage.clear();
+            window.location.href = '../auth/logout.php';
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const loginSuccess = urlParams.get('login');
+            const logoutSuccess = urlParams.get('logout');
+            const username = urlParams.get('username');
+            const userType = urlParams.get('role');
+
+            if (loginSuccess === 'success' && username && userType) {
+                sessionStorage.setItem('isLoggedIn', 'true');
+                sessionStorage.setItem('username', username);
+                sessionStorage.setItem('userType', userType);
+                window.history.replaceState({}, document.title, window.location.pathname);
+            } else if (logoutSuccess === 'success') {
+                sessionStorage.clear();
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+
+            checkLoginStatus();
+        });
+
+        window.addEventListener('storage', function (e) {
+            if (e.key === 'isLoggedIn') {
+                checkLoginStatus();
+            }
+        });
+    </script>
 </body>
 </html>
 

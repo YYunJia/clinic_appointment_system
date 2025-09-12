@@ -6,54 +6,6 @@
     <title>SmileMaker Dental</title>
     <link rel="stylesheet" href="./homepageStyle.css">
     <link rel="stylesheet" href="fontawesome/css/all.min.css">
-    <style>
-        .auth-buttons {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-        .user-menu {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-        .btn {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-        .btn-outline {
-            background: transparent;
-            border: 2px solid #667eea;
-            color: #667eea;
-        }
-        .btn-outline:hover {
-            background: #667eea;
-            color: white;
-        }
-        .btn-primary {
-            background: #667eea;
-            color: white;
-        }
-        .btn-primary:hover {
-            background: #5a6fd8;
-        }
-        .btn-danger {
-            background: #dc3545;
-            color: white;
-        }
-        .btn-danger:hover {
-            background: #c82333;
-        }
-        .btn i {
-            margin-right: 5px;
-        }
-    </style>
 </head>
 <body>
     <div class="navigation-container">
@@ -91,14 +43,14 @@
         <div class="action-buttons">
             <!-- Login State -->
             <div id="login-state" class="auth-buttons">
-                <button class="btn btn-outline" onclick="window.location.href = 'login.html'">Login</button>
+                <button class="btn outlineBtn" onclick="window.location.href = 'login.html'">Login</button>
                 <button class="btn btn-primary" onclick="window.location.href = 'register_patient.html'">Register</button>
             </div>
 
             <!-- Logged In State -->
             <div id="logged-in-state" class="auth-buttons" style="display: none;">
                 <div class="user-menu">
-                    <button class="btn btn-outline" id="username-btn" onclick="window.location.href = 'profile.html'">
+                    <button class="btn outlineBtn" id="username-btn" onclick="window.location.href = 'profile.html'">
                         <i class="fas fa-user"></i> <span id="username-text">Username</span>
                     </button>
                     <button class="btn btn-danger" onclick="logout()">

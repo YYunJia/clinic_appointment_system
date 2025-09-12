@@ -126,9 +126,9 @@ body {
 .dropdown:hover .dropdown-content {
     display: block;
 }
-.action-button{
+.action-buttons{
     display: flex;
-    gap: 15px;
+    gap: 10px;
     flex-shrink: 0;
 }
 
@@ -139,11 +139,10 @@ body {
     font-size: 16px;
     cursor: pointer;
     transition: all 0.3s ease;
-    white-space: nowrap;
 }
 
 .outlineBtn {
-    background: white;
+    background: transparent;
     color:#2a368e;
     border: 2px solid #2a368e;
 }
@@ -153,6 +152,35 @@ body {
     color: white;
 }
 
+.auth-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.user-menu {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.btn-primary {
+    background: #2a368e;
+    color: white;
+}
+.btn-primary:hover {
+    background: #5a6fd8;
+}
+.btn-danger {
+    background: #dc3545;
+    color: white;
+}
+.btn-danger:hover {
+    background: #c82333;
+}
+.btn i {
+    margin-right: 5px;
+}
 /* Footer */
 .footer {
     width: 100%;

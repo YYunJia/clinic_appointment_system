@@ -1,8 +1,10 @@
 <?php
+
 require_once __DIR__ . '/../services/AuthService.php';
 require_once __DIR__ . '/../models/User.php';
 
 class UserController {
+
     private $authService;
     private $userModel;
 
@@ -14,7 +16,7 @@ class UserController {
     // Show user profile
     public function showProfile() {
         $this->authService->requireAuth();
-        
+
         $user = $this->authService->getCurrentUser();
         if (!$user) {
             $this->setFlashMessage('error', 'User not found');
@@ -28,7 +30,7 @@ class UserController {
     // Update user profile
     public function updateProfile() {
         $this->authService->requireAuth();
-        
+
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $this->showProfile();
             return;
@@ -41,26 +43,21 @@ class UserController {
             }
 
             $data = [
-                'first_name' => trim($_POST['first_name'] ?? ''),
-                'last_name' => trim($_POST['last_name'] ?? ''),
-                'phone' => trim($_POST['phone'] ?? ''),
-                'date_of_birth' => $_POST['date_of_birth'] ?? null,
-                'address' => trim($_POST['address'] ?? '')
+                'name' => trim($_POST['name'] ?? ''),
+                'phone_number' => trim($_POST['phone_number'] ?? '')
             ];
 
-            // Validate required fields
-            if (empty($data['first_name']) || empty($data['last_name'])) {
-                throw new Exception('First name and last name are required');
+            if (empty($data['name'])) {
+                throw new Exception('Name is required');
             }
 
-            $result = $this->authService->updateProfile($user->getId(), $data);
+            $result = $this->authService->updateProfile($user->getUserId(), $data);
 
             if ($result['success']) {
                 $this->setFlashMessage('success', $result['message']);
             } else {
                 $this->setFlashMessage('error', $result['message']);
             }
-
         } catch (Exception $e) {
             $this->setFlashMessage('error', 'Profile update failed: ' . $e->getMessage());
         }
@@ -71,7 +68,7 @@ class UserController {
     // Change password
     public function changePassword() {
         $this->authService->requireAuth();
-        
+
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $this->showProfile();
             return;
@@ -102,7 +99,6 @@ class UserController {
             } else {
                 $this->setFlashMessage('error', $result['message']);
             }
-
         } catch (Exception $e) {
             $this->setFlashMessage('error', 'Password change failed: ' . $e->getMessage());
         }
@@ -113,11 +109,11 @@ class UserController {
     // List all users (admin only)
     public function listUsers() {
         $this->authService->requireRole('admin');
-        
+
         try {
             $users = $this->userModel->getAllByRole('patient');
             $doctors = $this->userModel->getAllByRole('doctor');
-            
+
             $this->renderView('user_list', [
                 'users' => $users,
                 'doctors' => $doctors
@@ -131,7 +127,7 @@ class UserController {
     // Deactivate user (admin only)
     public function deactivateUser() {
         $this->authService->requireRole('admin');
-        
+
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: user_list.php');
             exit;
@@ -139,7 +135,7 @@ class UserController {
 
         try {
             $userId = $_POST['user_id'] ?? '';
-            
+
             if (empty($userId)) {
                 throw new Exception('User ID is required');
             }
@@ -162,7 +158,6 @@ class UserController {
             } else {
                 $this->setFlashMessage('error', 'Failed to deactivate user');
             }
-
         } catch (Exception $e) {
             $this->setFlashMessage('error', 'Deactivation failed: ' . $e->getMessage());
         }
@@ -174,7 +169,7 @@ class UserController {
     // Activate user (admin only)
     public function activateUser() {
         $this->authService->requireRole('admin');
-        
+
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: user_list.php');
             exit;
@@ -182,7 +177,7 @@ class UserController {
 
         try {
             $userId = $_POST['user_id'] ?? '';
-            
+
             if (empty($userId)) {
                 throw new Exception('User ID is required');
             }
@@ -199,7 +194,6 @@ class UserController {
             } else {
                 $this->setFlashMessage('error', 'Failed to activate user');
             }
-
         } catch (Exception $e) {
             $this->setFlashMessage('error', 'Activation failed: ' . $e->getMessage());
         }
@@ -211,9 +205,9 @@ class UserController {
     // Show user details (admin only)
     public function showUserDetails() {
         $this->authService->requireRole('admin');
-        
+
         $userId = $_GET['id'] ?? '';
-        
+
         if (empty($userId)) {
             $this->setFlashMessage('error', 'User ID is required');
             header('Location: user_list.php');
@@ -222,7 +216,7 @@ class UserController {
 
         try {
             $user = $this->userModel->findById($userId);
-            
+
             if (!$user) {
                 $this->setFlashMessage('error', 'User not found');
                 header('Location: user_list.php');
@@ -230,7 +224,6 @@ class UserController {
             }
 
             $this->renderView('user_details', ['user' => $user->toArray()]);
-            
         } catch (Exception $e) {
             $this->setFlashMessage('error', 'Failed to load user details: ' . $e->getMessage());
             header('Location: user_list.php');
@@ -242,9 +235,9 @@ class UserController {
     private function renderView($viewName, $data = []) {
         $flashMessage = $this->getFlashMessage();
         $data['flash_message'] = $flashMessage;
-        
+
         $viewFile = __DIR__ . '/../view/' . $viewName . '.php';
-        
+
         if (file_exists($viewFile)) {
             extract($data);
             include $viewFile;
@@ -275,14 +268,15 @@ class UserController {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-        
+
         if (isset($_SESSION['flash_message'])) {
             $message = $_SESSION['flash_message'];
             unset($_SESSION['flash_message']);
             return $message;
         }
-        
+
         return null;
     }
 }
+
 ?>

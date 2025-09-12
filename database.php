@@ -1,11 +1,10 @@
 <?php
 
 function getDBConnection() {
-
-    $servername = "175.142.243.200";
-    $username = "remote_user";
-    $password = "dentalclinic123";
-    $dbname = "dental_clinic";
+    $servername = "127.0.0.1";  // or "localhost"
+    $username = "root";         // default for XAMPP
+    $password = "";             // default empty password
+    $dbname = "dental_clinic";  // create this DB in phpMyAdmin
 
     try {
         $conn = new PDO("mysql:host=$servername;dbname=$dbname;charset=utf8", $username, $password);
@@ -16,7 +15,6 @@ function getDBConnection() {
         exit;
     }
 }
-
 
 // Initialize database tables
 function initializeDatabase() {

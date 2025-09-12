@@ -1,153 +1,237 @@
 <?php
+/**
+ * Appointments Controller
+ * Handles requests for appointments viewing page
+ * Routes to appropriate API endpoints
+ */
 
-require_once __DIR__ . '/../models/Appointment.php';
-require_once __DIR__ . '/../models/serviceTypeFactory.php';
-require_once __DIR__ . '/../models/appointmentTypeFactory.php';
-require_once __DIR__ . '/../models/Service.php'; // Assuming you have a Service model to get service by ID
+header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
+header('Access-Control-Allow-Headers: Content-Type');
 
-class appointmentController {
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
 
-    public function getAppointmentByPatient($patientId) {
-        $apptModel = new Appointment();
-        $appointment = $apptModel->getAptByPatient($patientId);
-        header('Content-Type: application/json');
-        if ($appointment === false) {
-            echo json_encode(['error' => 'No appointment found for this patient']);
-        } else {
-            echo json_encode($appointment);
-        }
-    }
-
-    public function getAllAppointments() {
-        $apptModel = new Appointment();
-        $appointment = $apptModel->getAppointment();
-        header('Content-Type: application/json');
-        if ($appointment === false) {
-            echo json_encode(['error' => 'No appointment list found']);
-        } else {
-            echo json_encode($appointment);
-        }
-    }
-
-    // GET /api/appointments/doctor/{doctor_id}
-    public function getAppointmentByDoctor($doctorId) {
-        $apptModel = new Appointment();
-        $appointment = $apptModel->getAptByDentist($doctorId);
-        header('Content-Type: application/json');
-        if ($appointment === false) {
-            echo json_encode(['error' => 'No appointment list found for dentist']);
-        } else {
-            echo json_encode($appointment);
-        }
-    }
-
-    // GET /api/appointments/{appointment_id}
-    public function getAppointmentById($appointment_id) {
-        $apptModel = new Appointment();
-        $appointment = $apptModel->getAptById($appointment_id);
-        header('Content-Type: application/json');
-        if ($appointment === false) {
-            echo json_encode(['error' => 'No appointment found']);
-        } else {
-            echo json_encode($appointment);
-        }
-    }
-
-    public function create() {
-        $data = json_decode(file_get_contents('php://input'), true);
-
-        // Basic validation
-        if (!isset($data['patient_id'], $data['doctor_id'], $data['service_id'], $data['appointment_datetime'], $data['book_type'])) {
-            echo json_encode(['error' => 'Missing required fields']);
-            return;
-        }
-
-        $appointmentModel = new Appointment();
-        $serviceModel = new Service();
-        $service = $serviceModel->getServicesById($data['service_id']);
-        if ($service===false) {
-            echo json_encode(['error' => 'Service not found']);
-            return;
-        }
-
-        $bookType = strtolower($data['book_type']);
-        if ($bookType == 'consultation') {
-            // Consultation: No payment, status is scheduled
-            $result = $appointmentModel->createAppointment(
-                $data['patient_id'],
-                $data['doctor_id'],
-                $data['service_id'],
-                $data['appointment_datetime'],
-                'consultation',
-                'scheduled'
-            );
-            header('Content-Type: application/json');
-            echo json_encode([
-                'appointment' => $result,
-                'require_payment' => false
-            ]);
-        } elseif ($bookType == 'appointment') {
+class AppointmentsController {
     
-            $result = $appointmentModel->createAppointment(
-                $data['patient_id'],
-                $data['doctor_id'],
-                $data['service_id'],
-                $data['appointment_datetime'],
-                'appointment',
-                'pending_payment'
-            );
-            header('Content-Type: application/json');
-            echo json_encode([
+    public function handleRequest() {
+        $action = $_GET['action'] ?? '';
+        
+        switch ($action) {
+            case 'getFormData':
+                $this->getFormData();
+                break;
                 
-                'appointment' => $result,
-                'require_payment' => true
+            case 'getAllAppointments':
+                $this->getAllAppointments();
+                break;
+                
+            case 'getAppointmentsByDoctor':
+                $this->getAppointmentsByDoctor();
+                break;
+                
+            case 'getAppointmentsByPatient':
+                $this->getAppointmentsByPatient();
+                break;
+                
+            case 'getAppointmentDetails':
+                $this->getAppointmentDetails();
+                break;
+                
+            case 'updateStatus':
+                $this->updateAppointmentStatus();
+                break;
+                
+            default:
+                $this->sendError('Invalid action for appointments', 400);
+        }
+    }
+    
+    /**
+     * Get form data for appointments page filters
+     * Calls APIs to get patients, doctors, current user for filter dropdowns
+     */
+    private function getFormData() {
+        try {
+            // Call individual APIs - reusing the same APIs as dashboard
+            $patients = $this->callAPI('getAllPatientsAPI');
+            $doctors = $this->callAPI('getAllDoctorsAPI');
+            $currentUser = $this->callAPI('getCurrentUserAPI');
+            
+            $this->sendSuccess([
+                'patients' => $patients,
+                'doctors' => $doctors,
+                'currentUser' => $currentUser
             ]);
-        } else {
             
-            echo json_encode(['error' => 'Invalid book_type']);
+        } catch (Exception $e) {
+            $this->sendError('Error getting form data: ' . $e->getMessage(), 500);
         }
     }
-
-    public function updateStatus($appointmentId)
-    {
-        $data = json_decode(file_get_contents('php://input'), true);
-        if (!isset($data['status'])) {
+    
+    /**
+     * Get all appointments for viewing
+     * Calls getAllAppointmentsAPI
+     */
+    private function getAllAppointments() {
+        try {
+            $result = $this->callAPI('getAllAppointmentsAPI');
+            echo json_encode($result);
             
-            echo json_encode(['error' => 'Missing status']);
-            return;
+        } catch (Exception $e) {
+            $this->sendError('Error getting appointments: ' . $e->getMessage(), 500);
         }
-        $appointmentModel = new Appointment();
-        $result = $appointmentModel->updateAptStatus($appointmentId, $data['status']);
-        header('Content-Type: application/json');
-        echo json_encode(['message' => 'Status updated', 'appointment' => $result]);
     }
-
-    public function reschedule($appointmentId)
-    {
-        $data = json_decode(file_get_contents('php://input'), true);
-        if (!isset($data['appointment_datetime'])) {
-            echo json_encode(['error' => 'Missing appointment_datetime']);
-            return;
+    
+    /**
+     * Get appointments by doctor
+     * Calls getAppointmentsByDoctorAPI
+     */
+    private function getAppointmentsByDoctor() {
+        try {
+            $doctor_id = $_GET['doctor_id'] ?? '';
+            
+            if (empty($doctor_id)) {
+                $this->sendError('Doctor ID is required', 400);
+            }
+            
+            $result = $this->callAPI('getAppointmentsByDoctorAPI', [
+                'doctor_id' => $doctor_id
+            ]);
+            
+            echo json_encode($result);
+            
+        } catch (Exception $e) {
+            $this->sendError('Error getting doctor appointments: ' . $e->getMessage(), 500);
         }
-        $appointmentModel = new Appointment();
-        $result = $appointmentModel->rescheduleApt($appointmentId, $data['appointment_datetime']);
-        header('Content-Type: application/json');
-        echo json_encode(['message' => 'Rescheduled', 'appointment' => $result]);
     }
-
-    public function cancelByPatient($appointment_id)
-    {
-        $appointmentModel = new Appointment();
-        $result = $appointmentModel->cancelAptByPatient($appointment_id);
-        header('Content-Type: application/json');
-        echo json_encode(['message' => 'Cancelled by patient', 'appointment' => $result]);
+    
+    /**
+     * Get appointments by patient
+     * Calls getAppointmentsByPatientAPI
+     */
+    private function getAppointmentsByPatient() {
+        try {
+            $patient_id = $_GET['patient_id'] ?? '';
+            
+            if (empty($patient_id)) {
+                $this->sendError('Patient ID is required', 400);
+            }
+            
+            $result = $this->callAPI('getAppointmentsByPatientAPI', [
+                'patient_id' => $patient_id
+            ]);
+            
+            echo json_encode($result);
+            
+        } catch (Exception $e) {
+            $this->sendError('Error getting patient appointments: ' . $e->getMessage(), 500);
+        }
     }
-
-    public function cancelByClinic($appointment_id)
-    {
-        $appointmentModel = new Appointment();
-        $result = $appointmentModel->cancelAptByClinic($appointment_id);
-        header('Content-Type: application/json');
-        echo json_encode(['message' => 'Cancelled by clinic', 'appointment' => $result]);
+    
+    /**
+     * Get detailed appointment information
+     * Calls getAppointmentDetailsAPI
+     */
+    private function getAppointmentDetails() {
+        try {
+            $appointment_id = $_GET['appointment_id'] ?? '';
+            
+            if (empty($appointment_id)) {
+                $this->sendError('Appointment ID is required', 400);
+            }
+            
+            $result = $this->callAPI('getAppointmentDetailsAPI', [
+                'appointment_id' => $appointment_id
+            ]);
+            
+            echo json_encode($result);
+            
+        } catch (Exception $e) {
+            $this->sendError('Error getting appointment details: ' . $e->getMessage(), 500);
+        }
+    }
+    
+    /**
+     * Update appointment status
+     * Calls updateAppointmentStatusAPI
+     */
+    private function updateAppointmentStatus() {
+        try {
+            $result = $this->callAPI('updateAppointmentStatusAPI');
+            echo json_encode($result);
+            
+        } catch (Exception $e) {
+            $this->sendError('Error updating appointment status: ' . $e->getMessage(), 500);
+        }
+    }
+    
+    /**
+     * Call individual API files
+     */
+    private function callAPI($apiName, $params = []) {
+        $apiPath = __DIR__ . "/../api/{$apiName}.php";
+        
+        if (!file_exists($apiPath)) {
+            throw new Exception("API file not found: {$apiName}");
+        }
+        
+        // Preserve original GET parameters
+        $originalGet = $_GET;
+        
+        // Set parameters for the API
+        foreach ($params as $key => $value) {
+            $_GET[$key] = $value;
+        }
+        
+        // For POST/PUT requests, preserve the request method and body
+        $originalMethod = $_SERVER['REQUEST_METHOD'];
+        $originalInput = null;
+        
+        if (in_array($originalMethod, ['POST', 'PUT', 'DELETE'])) {
+            $originalInput = file_get_contents('php://input');
+        }
+        
+        // Capture the API output
+        ob_start();
+        include $apiPath;
+        $output = ob_get_clean();
+        
+        // Restore original GET parameters
+        $_GET = $originalGet;
+        
+        $result = json_decode($output, true);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new Exception("Invalid JSON response from {$apiName}");
+        }
+        
+        if (isset($result['success']) && !$result['success']) {
+            throw new Exception($result['error'] ?? "API error from {$apiName}");
+        }
+        
+        return $result;
+    }
+    
+    private function sendSuccess($data, $httpCode = 200) {
+        http_response_code($httpCode);
+        echo json_encode(array_merge(['success' => true], $data));
+        exit;
+    }
+    
+    private function sendError($message, $httpCode = 400) {
+        http_response_code($httpCode);
+        echo json_encode(['success' => false, 'error' => $message]);
+        exit;
     }
 }
+
+// Handle requests
+try {
+    $controller = new AppointmentsController();
+    $controller->handleRequest();
+} catch (Exception $e) {
+    http_response_code(500);
+    echo json_encode(['success' => false, 'error' => 'Server error: ' . $e->getMessage()]);
+}
+?>

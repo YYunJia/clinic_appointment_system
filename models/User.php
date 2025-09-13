@@ -3,8 +3,9 @@
 require_once __DIR__ . '/../database.php';
 
 class User {
+    protected $conn;
+    protected $table = 'users';
 
-    private $conn;
     public $user_id;
     public $username;
     public $password_hash;
@@ -16,15 +17,33 @@ class User {
     public function __construct($data = null) {
         $this->conn = getDBConnection();
         if ($data) {
-            foreach ($data as $key => $value) {
-                if (property_exists($this, $key)) {
-                    $this->$key = $value;
-                }
+            $this->fill($data);
+        }
+    }
+
+    /** Fill object properties from array */
+    public function fill(array $data) {
+        foreach ($data as $key => $value) {
+            if (property_exists($this, $key)) {
+                $this->$key = $value;
             }
         }
     }
 
-    // Getters
+    /** Convert object to array */
+    public function toArray() {
+        return [
+            'user_id' => $this->user_id,
+            'username' => $this->username,
+            'password_hash' => $this->password_hash,
+            'email' => $this->email,
+            'name' => $this->name,
+            'phone_number' => $this->phone_number,
+            'user_type' => $this->user_type
+        ];
+    }
+
+    /** Getters for compatibility with AuthService */
     public function getUserId() {
         return $this->user_id;
     }
@@ -41,106 +60,103 @@ class User {
         return $this->password_hash;
     }
 
-    // Convert to array for events
-    public function toArray() {
-        return [
-            'user_id' => $this->user_id,
-            'username' => $this->username,
-            'email' => $this->email,
-            'name' => $this->name,
-            'phone_number' => $this->phone_number,
-            'user_type' => $this->user_type
-        ];
+    /** Save (insert or update) */
+    public function save() {
+        if ($this->user_id) {
+            return $this->update();
+        } else {
+            return $this->create();
+        }
     }
 
-    // Check if email exists
-    public function emailExists($email) {
-        $stmt = $this->conn->prepare("SELECT COUNT(*) FROM users WHERE email = :email");
-        $stmt->bindParam(':email', $email);
-        $stmt->execute();
-        return $stmt->fetchColumn() > 0;
-    }
+    /** Create new record (public for AuthService) */
+    public function create() {
+        $fields = array_keys($this->toArray());
+        $placeholders = array_map(fn($f) => ":$f", $fields);
 
-    // Check if username exists
-    public function usernameExists($username) {
-        $stmt = $this->conn->prepare("SELECT COUNT(*) FROM users WHERE username = :username");
-        $stmt->bindParam(':username', $username);
-        $stmt->execute();
-        return $stmt->fetchColumn() > 0;
-    }
+        $sql = "INSERT INTO {$this->table} (" . implode(',', $fields) . ")
+                VALUES (" . implode(',', $placeholders) . ")";
+        $stmt = $this->conn->prepare($sql);
 
-    // Create a new user
-    public function create($data) {
-        $stmt = $this->conn->prepare("
-        INSERT INTO users (user_id, username, password_hash, email, name, phone_number, user_type)
-        VALUES (:user_id, :username, :password_hash, :email, :name, :phone_number, :user_type)
-    ");
-
-        $stmt->bindParam(':user_id', $data['user_id']);
-        $stmt->bindParam(':username', $data['username']);
-        $stmt->bindParam(':password_hash', $data['password_hash']);
-        $stmt->bindParam(':email', $data['email']);
-        $stmt->bindParam(':name', $data['name']);
-        $stmt->bindParam(':phone_number', $data['phone_number']);
-        $stmt->bindParam(':user_type', $data['user_type']);
-
-        if ($stmt->execute()) {
-            return $data['user_id']; // return ID (string)
+        foreach ($this->toArray() as $key => $value) {
+            $stmt->bindValue(":$key", $value);
         }
 
+        if ($stmt->execute()) {
+            return $this->user_id;
+        }
         return false;
     }
 
-    // Find user by ID
-    public function findById($userId) {
-        $stmt = $this->conn->prepare("SELECT * FROM users WHERE user_id = :user_id");
-        $stmt->bindParam(':user_id', $userId);
-        $stmt->execute();
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $row ? new User($row) : null;
-    }
-
-    // Find user by email
-    public function findByEmail($email) {
-        $stmt = $this->conn->prepare("SELECT * FROM users WHERE email = :email");
-        $stmt->bindParam(':email', $email);
-        $stmt->execute();
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $row ? new User($row) : null;
-    }
-
-    // Get last user of a type
-    public function getLastUserByType($role) {
-        $stmt = $this->conn->prepare("
-            SELECT user_id FROM users
-            WHERE user_type = :role
-            ORDER BY user_id DESC
-            LIMIT 1
-        ");
-        $stmt->bindParam(':role', $role);
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-
-    // Update user
-    public function update($data) {
-        if (!isset($this->user_id))
-            return false;
-
+    /** Update existing record (public for AuthService) */
+    public function update() {
         $fields = [];
-        foreach ($data as $key => $value) {
-            if ($key !== 'user_id')
-                $fields[] = "$key = :$key";
+        foreach ($this->toArray() as $key => $value) {
+            if ($key !== 'user_id') $fields[] = "$key = :$key";
         }
 
-        $sql = "UPDATE users SET " . implode(", ", $fields) . " WHERE user_id = :user_id";
+        $sql = "UPDATE {$this->table} SET " . implode(', ', $fields) . " WHERE user_id = :user_id";
         $stmt = $this->conn->prepare($sql);
 
-        foreach ($data as $key => $value) {
+        foreach ($this->toArray() as $key => $value) {
             $stmt->bindValue(":$key", $value);
         }
 
         return $stmt->execute();
+    }
+
+    /** Find by primary key */
+    public static function find($user_id) {
+        $instance = new static();
+        $stmt = $instance->conn->prepare("SELECT * FROM {$instance->table} WHERE user_id = :user_id");
+        $stmt->bindValue(':user_id', $user_id);
+        $stmt->execute();
+
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $data ? new static($data) : null;
+    }
+
+    /** Find by email */
+    public static function findByEmail($email) {
+        $instance = new static();
+        $stmt = $instance->conn->prepare("SELECT * FROM {$instance->table} WHERE email = :email");
+        $stmt->bindValue(':email', $email);
+        $stmt->execute();
+
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $data ? new static($data) : null;
+    }
+
+    /** Check if email exists */
+    public static function emailExists($email) {
+        $instance = new static();
+        $stmt = $instance->conn->prepare("SELECT COUNT(*) FROM {$instance->table} WHERE email = :email");
+        $stmt->bindValue(':email', $email);
+        $stmt->execute();
+        return $stmt->fetchColumn() > 0;
+    }
+
+    /** Check if username exists */
+    public static function usernameExists($username) {
+        $instance = new static();
+        $stmt = $instance->conn->prepare("SELECT COUNT(*) FROM {$instance->table} WHERE username = :username");
+        $stmt->bindValue(':username', $username);
+        $stmt->execute();
+        return $stmt->fetchColumn() > 0;
+    }
+
+    /** Get last user by type */
+    public static function getLastUserByType($role) {
+        $instance = new static();
+        $stmt = $instance->conn->prepare("
+            SELECT user_id FROM {$instance->table}
+            WHERE user_type = :role
+            ORDER BY user_id DESC
+            LIMIT 1
+        ");
+        $stmt->bindValue(':role', $role);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
 ?>

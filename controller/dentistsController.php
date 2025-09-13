@@ -4,7 +4,7 @@ require_once __DIR__ . '/../models/Dentist.php';
 require_once __DIR__ . '/../database.php';
 
 class dentistsController {
-    
+
     public function getAllDentist() {
         $pdo = getDBConnection();
         $dentistModel = new Dentist($pdo);
@@ -16,16 +16,12 @@ class dentistsController {
             echo json_encode($dentist);
         }
     }
-    
-    public function getAllAvailableSlot() {
+
+    public function getAvailableSlots($doctor_id, $day_of_week) {
         $pdo = getDBConnection();
         $dentistModel = new Dentist($pdo);
-        $slot = $dentistModel->getAvailableSlots();
+        $slots = $dentistModel->getAvailableSlots($doctor_id, $day_of_week);
         header('Content-Type: application/json');
-        if ($slot === false) {
-            echo json_encode(['error' => 'No available slot found']);
-        } else {
-            echo json_encode($slot);
-        }
+        echo json_encode($slots ?: []);
     }
 }

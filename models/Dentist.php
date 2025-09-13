@@ -1,7 +1,9 @@
 <?php
+
 require_once __DIR__ . '/../database.php';
 
 class Dentist {
+
     private $pdo;
 
     public function __construct($pdo) {
@@ -18,7 +20,7 @@ class Dentist {
         ");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    
+
     public function getDentists() {
         $stmt = $this->pdo->query("
             SELECT d.doctor_id, u.name AS full_name, d.specialization
@@ -28,14 +30,16 @@ class Dentist {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getAvailableSlots($doctor_id) {
+    public function getAvailableSlots($doctor_id, $day_of_week) {
         $stmt = $this->pdo->prepare("
-            SELECT schedule_id, day_of_week, start_time, end_time
-            FROM clinic_schedules
-            WHERE doctor_id = :doctor_id AND is_available = 1
-        ");
-        $stmt->execute([':doctor_id' => $doctor_id]);
+        SELECT schedule_id, day_of_week, start_time, end_time
+        FROM clinic_schedules
+        WHERE doctor_id = :doctor_id AND day_of_week = :day_of_week AND is_available = 1
+    ");
+        $stmt->execute([
+            ':doctor_id' => $doctor_id,
+            ':day_of_week' => $day_of_week
+        ]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
-

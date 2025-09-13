@@ -1,22 +1,22 @@
 <?php
 session_start();
 $username_from_session = isset($_SESSION['username']) ? $_SESSION['username'] : '';
-
 $username = isset($_GET['username']) ? $_GET['username'] : '';
 $serviceCategory = isset($_GET['service_category']) ? $_GET['service_category'] : '';
+$selected_service_id = $_POST['service_id'] ?? '';
+$selected_dentist = $_POST['doctor_id'] ?? '';
+$selected_date = $_POST['appointmentDate'] ?? '';
+$selected_time = $_POST['appointmentTime'] ?? '';
 
 $user = [];
 $services = [];
-$dentist = [];
-$available_slot = [];
+$dentists = [];
+$available_slots = [];
 
-$selected_dentist = $_POST['doctor'] ?? '';
-$selected_date = $_POST['appointmentDate'] ?? '';
-
+// Get user info
 if ($username) {
     $url = 'http://localhost/clinic_appointment_system/auth/get_user.php?username=' . urlencode($username);
     $response = file_get_contents($url);
-
     if ($response !== false) {
         $result = json_decode($response, true);
         if ($result && $result['success']) {
@@ -25,39 +25,66 @@ if ($username) {
     }
 }
 
+// Get services by category
 if ($serviceCategory) {
-    $url = 'http://localhost/clinic_appointment_system/auth/getServicesByCategoryService.php?service_category=' . urlencode($serviceCategory);
-
+    $url = 'http://localhost/clinic_appointment_system/auth/getServicebyCateService.php?service_category=' . urlencode($serviceCategory);
     $response = file_get_contents($url);
-
-    if ($response === false) {
-        return 0;
-    } else {
+    if ($response !== false) {
         $services = json_decode($response, true);
     }
 }
 
-
+// Get all dentists
 $url = 'http://localhost/clinic_appointment_system/auth/getDentistService.php';
-
 $response = file_get_contents($url);
-
-if ($response === false) {
-    return 0;
-} else {
-    $dentist = json_decode($response, true);
+if ($response !== false) {
+    $dentists = json_decode($response, true);
 }
 
-
+// Get available slots for selected dentist & date
 if ($selected_dentist && $selected_date) {
     $url = "http://localhost/clinic_appointment_system/auth/getAvailableSlotService.php?doctor_id=" . urlencode($selected_dentist) . "&date=" . urlencode($selected_date);
-
     $response = file_get_contents($url);
+    if ($response !== false) {
+        $available_slots = json_decode($response, true);
+    }
+}
 
-    if ($response === false) {
-        return 0;
-    } else {
-        $available_slot = json_decode($response, true);
+// Get the selected service details for summary (including price)
+$selected_service_detail = null;
+if ($selected_service_id) {
+    $url = "http://localhost/clinic_appointment_system/auth/getServiceByIdService.php?service_id=" . urlencode($selected_service_id);
+    $response = file_get_contents($url);
+    if ($response !== false) {
+        $service_result = json_decode($response, true);
+        // getServiceById usually returns ['success'=>true,'data'=>{...}]
+        if ($service_result && isset($service_result['data'])) {
+            $selected_service_detail = $service_result['data'];
+        } elseif (isset($service_result[0])) { // sometimes just returns array of one
+            $selected_service_detail = $service_result[0];
+        }
+    }
+}
+
+// Get the selected dentist details for summary
+$selected_dentist_detail = null;
+if ($selected_dentist && !empty($dentists)) {
+    foreach ($dentists as $dentistOption) {
+        if ($dentistOption['doctor_id'] == $selected_dentist) {
+            $selected_dentist_detail = $dentistOption;
+            break;
+        }
+    }
+}
+
+// Format selected time for summary
+$selected_slot = null;
+if ($selected_time && !empty($available_slots)) {
+    foreach ($available_slots as $slot) {
+        if ($slot['start_time'] == $selected_time) {
+            $selected_slot = $slot;
+            break;
+        }
     }
 }
 ?>
@@ -219,7 +246,7 @@ if ($selected_dentist && $selected_date) {
             </div>
 
 
-            <form id="appointmentForm">
+            <form id="appointmentForm" action="book_appointment.php?service_category=<?php echo urlencode($serviceCategory); ?>&username=<?php echo urlencode($username); ?>" method="POST">
                 <input type="hidden" name="userId" value="<?php echo htmlspecialchars($user['user_id'] ?? '') ?>">
 
                 <div class="form-grid">
@@ -228,20 +255,22 @@ if ($selected_dentist && $selected_date) {
                         <select class="serviceType" id="service" name="service_id" required>
                             <option value="">-- Select Service --</option>
                             <?php foreach ($services as $serviceOption): ?>
-                                <option value="<?php echo ($serviceOption['service_id']) ?>">
-                                    <?php echo ($serviceOption['service_name']) ?>
+                                <option value="<?php echo htmlspecialchars($serviceOption['service_id']); ?>"
+                                        <?php if ($selected_service_id == $serviceOption['service_id']) echo 'selected'; ?>>
+                                            <?php echo htmlspecialchars($serviceOption['service_name']); ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
                     </div>
 
-                    <div class="form-group full-width">
-                        <label>Select a Dentist</label>
-                        <select class="serviceType" id="dentist" name="doctor_id" required onchange="this.form.submit()">
+                    <div class="form-group">
+                        <label for="doctor_id">Select a Dentist</label>
+                        <select class="serviceType" id="doctor_id" name="doctor_id" required onchange="this.form.submit()">
                             <option value="">-- Select Dentist --</option>
-                            <?php foreach ($dentist as $dentistOption): ?>
-                                <option value="<?php echo ($dentistOption['doctor_id']) ?>"<?php if ($selected_dentist == $dentistOption['doctor_id']) echo "selected"; ?>>
-                                    <?php echo ($dentistOption['full_name'] . " (" . $dentistOption['specialization'] . ")"); ?>
+                            <?php foreach ($dentists as $dentistOption): ?>
+                                <option value="<?php echo htmlspecialchars($dentistOption['doctor_id']) ?>"
+                                        <?php if ($selected_dentist == $dentistOption['doctor_id']) echo "selected"; ?>>
+                                            <?php echo htmlspecialchars($dentistOption['full_name'] . " (" . $dentistOption['specialization'] . ")"); ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
@@ -250,29 +279,35 @@ if ($selected_dentist && $selected_date) {
                     <?php if ($selected_dentist): ?>
                         <div class="form-group">
                             <label for="appointmentDate">Select Date</label>
-                            <input type="date" id="appointmentDate" name="appointmentDate" value="<?php echo htmlspecialchars($selected_date); ?>" required onchange="this.form.submit()">
+                            <input class="serviceType" type="date" id="appointmentDate" name="appointmentDate"
+                                   value="<?php echo htmlspecialchars($selected_date); ?>" required onchange="this.form.submit()">
+                            <input type="hidden" name="doctor_id" value="<?php echo htmlspecialchars($selected_dentist); ?>">
                         </div>
                     <?php endif; ?>
 
-                    <!-- Available Slots -->
                     <?php if ($selected_dentist && $selected_date): ?>
                         <div class="form-group">
                             <label for="appointmentTime">Select Time</label>
-                            <?php if (!empty($available_slots)): ?>
-                                <select name="appointmentTime" id="appointmentTime" required>
+                            <?php if (!empty($available_slots) && !isset($available_slots['error'])): ?>
+                                <select class="serviceType" name="appointmentTime" id="appointmentTime" required>
                                     <option value="">-- Select Time Slot --</option>
                                     <?php foreach ($available_slots as $slot): ?>
-                                        <option value="<?php echo htmlspecialchars($slot['start_time']); ?>">
-                                            <?php
-                                            echo htmlspecialchars(date('h:i A', strtotime($slot['start_time']))) . " - " .
-                                            htmlspecialchars(date('h:i A', strtotime($slot['end_time'])));
-                                            ?>
+                                        <option value="<?php echo htmlspecialchars($slot['start_time']); ?>"
+                                                <?php if ($selected_time == $slot['start_time']) echo "selected"; ?>>
+                                                    <?php
+                                                    echo htmlspecialchars(date('h:i A', strtotime($slot['start_time']))) . " - " .
+                                                    htmlspecialchars(date('h:i A', strtotime($slot['end_time'])));
+                                                    ?>
                                         </option>
                                     <?php endforeach; ?>
                                 </select>
+                            <?php elseif (isset($available_slots['error'])): ?>
+                                <p><?php echo htmlspecialchars($available_slots['error']); ?></p>
                             <?php else: ?>
                                 <p>No available slots for this date.</p>
                             <?php endif; ?>
+                            <input type="hidden" name="doctor_id" value="<?php echo htmlspecialchars($selected_dentist); ?>">
+                            <input type="hidden" name="appointmentDate" value="<?php echo htmlspecialchars($selected_date); ?>">
                         </div>
                     <?php endif; ?>
 
@@ -284,10 +319,11 @@ if ($selected_dentist && $selected_date) {
 
                 <div class="btn-container">
                     <a href="#" class="btn outlineBtn">Back to Services</a>
-                    <button type="submit" class="btn payment-btn">Proceed to Payment</button>
+                    <?php if ($selected_dentist && $selected_date): ?>
+                        <button type="submit" class="btn payment-btn">Proceed to Payment</button>
+                    <?php endif; ?>
                 </div>
             </form>
-
         </div>
 
         <!-- Summary Section -->
@@ -296,27 +332,71 @@ if ($selected_dentist && $selected_date) {
 
             <div class="summary-item">
                 <span class="summary-label">Service:</span>
-                <span class="summary-value">Complete Dentures</span>
+                <span class="summary-value">
+                    <?php
+                    if ($selected_service_detail) {
+                        echo htmlspecialchars($selected_service_detail['service_name']);
+                    } elseif ($selected_service_id) {
+                        // fallback: show selected id
+                        echo "Service #" . htmlspecialchars($selected_service_id);
+                    } else {
+                        echo "Not selected";
+                    }
+                    ?>
+                </span>
             </div>
 
             <div class="summary-item">
                 <span class="summary-label">Dentist:</span>
-                <span class="summary-value">Not selected</span>
+                <span class="summary-value">
+                    <?php
+                    if ($selected_dentist_detail) {
+                        echo htmlspecialchars($selected_dentist_detail['full_name']);
+                        if (!empty($selected_dentist_detail['specialization'])) {
+                            echo " (" . htmlspecialchars($selected_dentist_detail['specialization']) . ")";
+                        }
+                    } elseif ($selected_dentist) {
+                        echo "Dentist #" . htmlspecialchars($selected_dentist);
+                    } else {
+                        echo "Not selected";
+                    }
+                    ?>
+                </span>
             </div>
 
             <div class="summary-item">
                 <span class="summary-label">Date & Time:</span>
-                <span class="summary-value">Not selected</span>
+                <span class="summary-value">
+                    <?php
+                    if ($selected_date && $selected_time) {
+                        echo htmlspecialchars(date("d M Y", strtotime($selected_date))) . " ";
+                        if ($selected_slot) {
+                            echo htmlspecialchars(date('h:i A', strtotime($selected_slot['start_time']))) . " - " .
+                            htmlspecialchars(date('h:i A', strtotime($selected_slot['end_time'])));
+                        } else {
+                            echo htmlspecialchars(date('h:i A', strtotime($selected_time)));
+                        }
+                    } elseif ($selected_date) {
+                        echo htmlspecialchars(date("d M Y", strtotime($selected_date)));
+                    } else {
+                        echo "Not selected";
+                    }
+                    ?>
+                </span>
             </div>
 
-            <div class="summary-item">
-                <span class="summary-label">Duration:</span>
-                <span class="summary-value">Approx. 60 minutes</span>
-            </div>
+            <?php
+            $total = "";
+            if ($selected_service_detail && isset($selected_service_detail['base_price'])) {
+                $total = number_format($selected_service_detail['base_price'], 2);
+            }
+            ?>
 
             <div class="summary-total">
                 <span class="summary-label">Total:</span>
-                <span class="summary-value">RM 350.00</span>
+                <span class="summary-value">
+                    <?php echo $total ? "RM {$total}" : "Not calculated"; ?>
+                </span>
             </div>
         </div>
     </div>

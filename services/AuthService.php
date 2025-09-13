@@ -60,43 +60,61 @@ class AuthService {
     }
 
     /** Register patient */
-
-    /** Register patient */
     public function registerPatient($data) {
         try {
-            $required = ['username', 'email', 'password', 'name', 'phone_number'];
+            // Required fields
+            $required = [
+                'username', 'email', 'password', 'name', 'phone_number',
+                'emergency_contact_name', 'emergency_contact_phone'
+            ];
             foreach ($required as $field) {
                 if (empty($data[$field]))
                     throw new Exception("Field '$field' is required");
             }
 
+            // Validation
             if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL))
                 throw new Exception("Invalid email format");
             if (strlen($data['password']) < 8)
-                throw new Exception("Password must be at least 8 characters long");
+                throw new Exception("Password must be at least 8 characters");
+            if (!preg_match('/[A-Z]/', $data['password']) ||
+                    !preg_match('/[a-z]/', $data['password']) ||
+                    !preg_match('/[0-9]/', $data['password']))
+                throw new Exception("Password must include uppercase, lowercase, and number");
+            if (!preg_match('/^[a-zA-Z0-9_]{3,20}$/', $data['username']))
+                throw new Exception("Invalid username");
             if ($this->userModel->emailExists($data['email']))
                 throw new Exception("Email already exists");
             if ($this->userModel->usernameExists($data['username']))
                 throw new Exception("Username already exists");
 
+            // Hash password
             $data['password_hash'] = $this->hashPassword($data['password']);
             unset($data['password']);
             $data['user_type'] = 'patient';
+
+            // **Generate user_id BEFORE creating**
             $data['user_id'] = $this->generateUserId('patient');
 
-            // Create user and fetch full object
-            $userId = $this->userModel->create($data);
-            if (!$userId)
-                throw new Exception("Failed to create patient");
+            // Create user
+            $user = new User($data);
+            $user->create(); // now user_id is set, no SQL error
+            // Insert into patients table
+            $conn = getDBConnection();
+            $stmt = $conn->prepare("
+            INSERT INTO patients (patient_id, user_id, emergency_contact_name, emergency_contact_phone)
+            VALUES (:patient_id, :user_id, :emergency_contact_name, :emergency_contact_phone)
+        ");
+            $stmt->bindParam(':patient_id', $data['user_id']);
+            $stmt->bindParam(':user_id', $data['user_id']);
+            $stmt->bindParam(':emergency_contact_name', $data['emergency_contact_name']);
+            $stmt->bindParam(':emergency_contact_phone', $data['emergency_contact_phone']);
+            $stmt->execute();
 
-            $user = $this->userModel->findById($userId);
+            // Trigger event
             $this->eventManager->triggerEvent('patient_registered', $user->toArray());
 
-            return [
-                'success' => true,
-                'user_id' => $user->getUserId(),
-                'message' => 'Patient registered successfully'
-            ];
+            return ['success' => true, 'user_id' => $data['user_id'], 'message' => 'Patient registered successfully'];
         } catch (Exception $e) {
             return ['success' => false, 'message' => $e->getMessage()];
         }
@@ -110,7 +128,7 @@ class AuthService {
             if (!$admin || $admin->getUserType() !== 'admin')
                 throw new Exception("Unauthorized: Admin access required");
 
-            // Required fields including doctor-specific info
+            // Required fields
             $required = ['username', 'email', 'password', 'name', 'phone_number', 'specialization', 'license_number'];
             foreach ($required as $field) {
                 if (empty($data[$field]))
@@ -122,7 +140,9 @@ class AuthService {
                 throw new Exception("Invalid email format");
             if (strlen($data['password']) < 8)
                 throw new Exception("Password too short");
-            if (!preg_match('/[A-Z]/', $data['password']) || !preg_match('/[a-z]/', $data['password']) || !preg_match('/[0-9]/', $data['password']))
+            if (!preg_match('/[A-Z]/', $data['password']) ||
+                    !preg_match('/[a-z]/', $data['password']) ||
+                    !preg_match('/[0-9]/', $data['password']))
                 throw new Exception("Password must include uppercase, lowercase, and number");
             if (!preg_match('/^[a-zA-Z0-9_]{3,20}$/', $data['username']))
                 throw new Exception("Invalid username");
@@ -131,37 +151,34 @@ class AuthService {
             if ($this->userModel->usernameExists($data['username']))
                 throw new Exception("Username exists");
 
-            // Prepare user data
+            // Hash password
             $data['password_hash'] = $this->hashPassword($data['password']);
-            $data['user_type'] = 'doctor';
             unset($data['password']);
+            $data['user_type'] = 'doctor';
+
+            // **Generate user_id BEFORE creating**
             $data['user_id'] = $this->generateUserId('doctor');
 
-            // Save user in users table
-            $userId = $this->userModel->create($data);
-            if (!$userId)
-                throw new Exception("Failed to create doctor");
+            // Create user
+            $user = new User($data);
+            $user->create();
 
-            // Save doctor-specific info in doctors table
-            $conn = getDBConnection(); // PDO connection
+            // Insert into doctors table
+            $conn = getDBConnection();
             $stmt = $conn->prepare("
-    INSERT INTO doctors (doctor_id, user_id, specialization, license_number)
-    VALUES (:doctor_id, :user_id, :specialization, :license_number)
-");
-            $stmt->bindParam(':doctor_id', $userId); // FK
-            $stmt->bindParam(':user_id', $userId);   // Optional, if you want a separate column
+            INSERT INTO doctors (doctor_id, user_id, specialization, license_number)
+            VALUES (:doctor_id, :user_id, :specialization, :license_number)
+        ");
+            $stmt->bindParam(':doctor_id', $data['user_id']);
+            $stmt->bindParam(':user_id', $data['user_id']);
             $stmt->bindParam(':specialization', $data['specialization']);
             $stmt->bindParam(':license_number', $data['license_number']);
             $stmt->execute();
 
-            $user = $this->userModel->findById($userId);
+            // Trigger event
             $this->eventManager->triggerEvent('doctor_registered', $user->toArray());
 
-            return [
-                'success' => true,
-                'user_id' => $userId,
-                'message' => 'Doctor registered successfully'
-            ];
+            return ['success' => true, 'user_id' => $data['user_id'], 'message' => 'Doctor registered successfully'];
         } catch (Exception $e) {
             return ['success' => false, 'message' => $e->getMessage()];
         }
@@ -264,5 +281,4 @@ class AuthService {
     }
 }
 ?>
-
 

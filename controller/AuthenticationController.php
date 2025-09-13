@@ -23,7 +23,9 @@ class AuthenticationController {
                 'username' => trim($_POST['username'] ?? ''),
                 'email' => trim($_POST['email'] ?? ''),
                 'password' => $_POST['password'] ?? '',
-                'phone_number' => trim($_POST['phone_number'] ?? ''), // <-- fixed
+                'phone_number' => trim($_POST['phone_number'] ?? ''),
+                'emergency_contact_name' => trim($_POST['emergency_contact_name'] ?? ''),
+                'emergency_contact_phone' => trim($_POST['emergency_contact_phone'] ?? ''),
             ];
 
             $result = $this->authService->registerPatient($data);
@@ -83,48 +85,52 @@ class AuthenticationController {
 
     // Handle user login
     public function login() {
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        header('Location: ../view/login.html');
-        exit;
-    }
+        session_start(); // ✅ Needed
 
-    try {
-        $email = trim($_POST['email'] ?? '');
-        $password = $_POST['password'] ?? '';
-
-        $result = $this->authService->login($email, $password);
-
-        if ($result['success']) {
-            $userType = $result['user']['user_type'];
-
-            // Redirect based on user_type
-            switch ($userType) {
-                case 'patient':
-                    header('Location: ../view/homepage_patient.html');
-                    break;
-                case 'doctor':
-                    header('Location: ../view/doctor_dashboard.html');
-                    break;
-                case 'admin':
-                    header('Location: ../view/admin_dashboard.html');
-                    break;
-                default:
-                    header('Location: ../view/homepage.html'); // fallback
-                    break;
-            }
-            exit;
-
-        } else {
-            header('Location: ../view/login.html?error=' . urlencode($result['message']));
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: ../view/login.html');
             exit;
         }
 
-    } catch (Exception $e) {
-        header('Location: ../view/login.html?error=' . urlencode($e->getMessage()));
-        exit;
-    }
-}
+        try {
+            $email = trim($_POST['email'] ?? '');
+            $password = $_POST['password'] ?? '';
 
+            $result = $this->authService->login($email, $password);
+
+            if ($result['success']) {
+                $user = $result['user'];
+                $_SESSION['user_id'] = $user['user_id'];
+                $_SESSION['username'] = $user['username'];
+                $_SESSION['user_type'] = $user['user_type'];
+
+                switch ($user['user_type']) {
+                    case 'patient':
+                        header('Location: ../view/HomePage_patient.html?login=success&username='
+                                . urlencode($user['username']) . '&role=patient');
+                        break;
+                    case 'doctor':
+                        header('Location: ../view/doctor_dashboard.html?login=success&username='
+                                . urlencode($user['username']) . '&role=doctor');
+                        break;
+                    case 'admin':
+                        header('Location: ../view/admin_dashboard.html?login=success&username='
+                                . urlencode($user['username']) . '&role=admin');
+                        break;
+                    default:
+                        header('Location: ../view/homepage.html');
+                }
+                exit;
+            } else {
+                header('Location: ../view/login.html?error=' . urlencode($result['message']));
+                exit;
+            }
+        } catch (Exception $e) {
+            error_log("Login failed: " . $e->getMessage());
+            header('Location: ../view/login.html?error=server_error');
+            exit;
+        }
+    }
 
     // Handle user logout
     public function logout() {

@@ -22,9 +22,9 @@ class Service {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function getServicesByCategory($serviceCategory) {
-        $stmt = $this->conn->prepare("SELECT * FROM services WHERE service_category = :serviceCategory");
-        $stmt->execute([':service_id' => $serviceCategory]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+    public function getServicesByCategory($service_category) {
+        $stmt = $this->conn->prepare("SELECT * FROM services WHERE service_category = :service_category");
+        $stmt->execute([':service_category' => $service_category]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

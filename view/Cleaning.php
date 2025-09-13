@@ -1,12 +1,65 @@
+<?php
+session_start();
+$username_from_session = isset($_SESSION['username']) ? $_SESSION['username'] : '';
+?>
+
 <!DOCTYPE html>
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Root Canal Treatment</title>
+    <title>Scaling & Polishing</title>
     <link rel="stylesheet" href=".//homepageStyle.css">
     <link rel="stylesheet" href="fontawesome/css/fontawesome.min.css">
     <link rel="stylesheet" href="fontawesome/css/all.min.css">
+     <style>
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .user-menu {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #667eea;
+            color: #667eea;
+        }
+        .btn-outline:hover {
+            background: #667eea;
+            color: white;
+        }
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #5a6fd8;
+        }
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        .btn i {
+            margin-right: 5px;
+        }
+    </style>
 
 </head>
 <body>
@@ -27,15 +80,15 @@
                 <li class="dropdown">
                     <a href="#" class="dropbtn active">Service</a>
                     <div class="dropdown-content">
-                        <a href=".//RoutineCheckUp.html">Routine Check Up/Consultant</a>
-                        <a href=".//Whitening.html">Whitening</a>
-                        <a href=".//braces.html">Braces</a>
-                        <a href=".//Dentures.html">Dentures</a>
-                        <a href=".//Filling.html">Tooth Filling</a>
-                        <a href=".//Cleaning.html">Scaling and Polishing</a>
-                        <a href=".//CanalTreatment.html">Root Canal Treatment</a>
-                        <a href=".//CrownsBridges.html">Crowns and Bridges</a>
-                        <a href=".//Extraction.html">Tooth Extraction</a>
+                        <a href=".//RoutineCheckUp.php">Routine Check Up/Consultant</a>
+                        <a href=".//Whitening.php">Whitening</a>
+                        <a href=".//braces.php">Braces</a>
+                        <a href=".//Dentures.php">Dentures</a>
+                        <a href=".//Filling.php">Tooth Filling</a>
+                        <a href=".//Cleaning.php">Scaling and Polishing</a>
+                        <a href=".//CanalTreatment.php">Root Canal Treatment</a>
+                        <a href=".//CrownsBridges.php">Crowns and Bridges</a>
+                        <a href=".//Extraction.php">Tooth Extraction</a>
                     </div>
                 </li>
                 <li><a href="#contact">Contact Us</a></li>
@@ -64,13 +117,15 @@
     </div>
 
     <!-- Hero Section -->
-    <section class="service-header canal-header">
+    <section class="service-header cleaning-header">
         <div class="serviceHeader-container">
-            <h1>Root Canal Treatment</h1>
-            <p>Expert root canal therapy to save your natural teeth and relieve pain. Our experienced dentists use the latest technology to ensure your comfort throughout the procedure.</p>
+            <h1>Scaling & Polishing</h1>
+            <p>Professional teeth cleaning to remove plaque and tartar buildup, leaving your teeth cleaner, brighter, and healthier. Our gentle approach ensures a comfortable experience.</p>
             <div class="btn-container">
-                <a href=".//book_appointment.html?service_category=Endodontic&book_type=appointment" class="btn apptBtn"> Make Appointment</a>
-                <a href=".//consultation.html?service_category=Endodontic&book_type=consultation" class="btn consultBtn">Book Consultation</a>
+                <a href=".//book_appointment.php?service_category=Preventive&book_type=appointment&username=<?php echo urlencode($username_from_session); ?>" 
+                   class="bookBtn apptBtn"> Make Appointment</a>
+                <a href=".//consultation.php?service_category=Preventive&book_type=consultation&username=<?php echo urlencode($username_from_session); ?>" 
+                   class="bookBtn consultBtn">Book Consultation</a>
             </div>
         </div>
     </section>
@@ -78,66 +133,66 @@
     <div class="container">
         <!-- What's Included Section -->
         <section class="content-section">
-            <h2 class="section-title">What is Root Canal Treatment?</h2>
+            <h2 class="section-title">What is Scaling & Polishing?</h2>
 
             <div class="twocolContainer">
                 <div>
-                    <p>Root canal treatment (also called endodontics) is needed when the blood or nerve supply of the tooth (known as the pulp) is infected through decay or injury.</p>
-                    <p>During the procedure, the infected or inflamed pulp is removed and the inside of the tooth is carefully cleaned and disinfected, then filled and sealed with a rubber-like material called gutta-percha. Afterwards, the tooth is restored with a crown or filling for protection.</p>
-                    <p>Contrary to popular belief, root canal treatment is no more painful than having a filling placed. Our modern techniques and anesthesia ensure you're comfortable throughout the procedure.</p>
+                   <p>Scaling and polishing is a professional cleaning procedure that removes plaque and tartar (calculus) that regular brushing and flossing can't eliminate. Over time, plaque hardens into tartar which can only be removed by dental professionals.</p>
+                    <p>Scaling involves carefully removing these deposits from your teeth surfaces, especially from areas between teeth and along the gumline. Polishing follows scaling to smooth the tooth surfaces, making it harder for plaque to accumulate.</p>
+                    <p>Regular scaling and polishing (every 6 months) is recommended to maintain healthy gums and prevent gum disease, which is a leading cause of tooth loss in adults.</p>
                 </div>
                 <div class="content-image">
-                    <img src="image/treatment.jpg" alt="Dental Check-Up">
-                </div>
-            </div>
-        </section>
-
-        <!-- Process Section -->
-        <section class="content-section">
-            <h2 class="section-title">The Check-Up Process</h2>
-
-            <div class="process-steps">
-                <div class="step-card">
-                    <h1 class="numbers">&#49;</h1>
-                    <h3>Examination & X-Ray</h3>
-                    <p>We examine your tooth and take X-rays to assess the damage and plan the treatment.</p>
-                </div>
-
-                <div class="step-card">
-                    <h1 class="numbers">&#50;</h1>
-                    <h3>Anesthesia</h3>
-                    <p>Local anesthesia is administered to ensure you feel no pain during the procedure.</p>
-                </div>
-
-                <div class="step-card">
-                    <h1 class="numbers">&#51;</h1>
-                    <h3>Pulp Removal</h3>
-                    <p>The infected pulp is carefully removed from the tooth's chambers and canals.</p>
-                </div>
-
-                <div class="step-card">
-                    <h1 class="numbers">&#52;</h1>
-                    <h3>Filling & Sealing</h3>
-                    <p>The cleaned space is filled with biocompatible material and sealed to prevent reinfection.</p>
+                    <img src="image/cleaning.jpg" alt="Dental Check-Up">
                 </div>
             </div>
         </section>
 
         <!-- Why Important Section -->
         <section class="content-section">
-            <h2 class="section-title">Benefits of Root Canal Treatment</h2>
+            <h2 class="section-title">Benefits of Scaling & Polishing</h2>
 
             <div class="twocolContainer">
                 <div class="content-image">
-                    <img src="image/treatment-benefit.jpg" alt="Dental Examination">
+                    <img src="image/cleaning-benefit.jpg" alt="Dental Examination">
                 </div>
                 <div>
                     <ul class="benefits-list">
-                        <li><i class="fas fa-tooth"></i> <strong>Preserves Your Natural Tooth</strong> - Maintains your natural smile and prevents adjacent teeth from shifting</li>
-                        <li><i class="fas fa-utensils"></i> <strong>Efficient Chewing</strong> - Restores normal biting force and sensation, allowing you to eat comfortably</li>
-                        <li><i class="fas fa-smile"></i> <strong>Natural Appearance</strong> - Crowns are customized to match the color and shape of your natural teeth</li>
-                        <li><i class="fas fa-dollar-sign"></i> <strong>Cost-Effective</strong> - More affordable than tooth extraction followed by a bridge or implant</li>
+                        <li><i class="fas fa-shield-alt"></i><strong>Prevents Gum Disease</strong> – Removes plaque and tartar that cause gingivitis and periodontitis</li>
+                        <li><i class="fas fa-smile"></i><strong>Brighter Smile</strong> – Removes surface stains for whiter, brighter teeth</li>
+                        <li><i class="fas fa-wind"></i><strong>Fresher Breath</strong> – Eliminates bacteria that cause bad breath</li>
+                        <li><i class="fas fa-heartbeat"></i><strong>Overall Health</strong> – Good oral health is linked to better overall health</li>
                     </ul>
+                   </div>
+            </div>
+        </section>
+
+        <!-- Process Section -->
+        <section class="content-section">
+            <h2 class="section-title">The Scaling & Polishing Process</h2>
+
+            <div class="process-steps">
+                <div class="step-card">
+                    <h1 class="numbers">&#49;</h1>
+                    <h3>Initial Examination</h3>
+                    <p>We examine your teeth and gums to assess your oral health and identify problem areas.</p>
+                </div>
+
+                <div class="step-card">
+                    <h1 class="numbers">&#50;</h1>
+                    <h3>Scaling</h3>
+                    <p>Using specialized instruments, we carefully remove plaque and tartar from tooth surfaces.</p>
+                </div>
+
+                <div class="step-card">
+                    <h1 class="numbers">&#51;</h1>
+                    <h3>Polishing</h3>
+                    <p>We polish your teeth with a gentle abrasive paste to remove surface stains and smooth enamel.</p>
+                </div>
+
+                <div class="step-card">
+                    <h1 class="numbers">&#52;</h1>
+                    <h3>Fluoride Treatment</h3>
+                    <p>Optional fluoride application to strengthen enamel and protect against cavities.</p>
                 </div>
             </div>
         </section>
@@ -145,16 +200,16 @@
 
     <footer class="footer">
         <div class="footer-container">
-
-            <div class="footer-clinic">
-                <div class="footer-logo">
-                    <img src="image/logowithnamewhite.png" alt="Logo" style="width:50px;">
-                    <div class="footer-name">SmileMaker Dental</div>
+            
+             <div class="footer-clinic">
+                    <div class="footer-logo">
+                        <img src="image/logowithnamewhite.png" alt="Logo" style="width:50px;">
+                        <div class="footer-name">SmileMaker Dental</div>
+                    </div>
+                    <p class="footer-intro">
+                        Providing comprehensive healthcare services with compassion and excellence since 2005. Our team of board-certified physicians is dedicated to your wellbeing.
+                    </p>
                 </div>
-                <p class="footer-intro">
-                    Providing comprehensive healthcare services with compassion and excellence since 2005. Our team of board-certified physicians is dedicated to your wellbeing.
-                </p>
-            </div>
 
             <!-- Contact Info -->
             <div class="footer-contact">
@@ -243,4 +298,5 @@
     </script>
 </body>
 </html>
+
 

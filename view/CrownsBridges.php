@@ -1,15 +1,18 @@
+<?php
+session_start();
+$username_from_session = isset($_SESSION['username']) ? $_SESSION['username'] : '';
+?>
+
 <!DOCTYPE html>
-<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmileMaker Dental</title>
-    <base href="/clinic_appointment_system/view/">
-<link rel="stylesheet" href="homepageStyle.css">
+    <title>Crown & Bridge</title>
+    <link rel="stylesheet" href=".//homepageStyle.css">
+    <link rel="stylesheet" href="fontawesome/css/fontawesome.min.css">
     <link rel="stylesheet" href="fontawesome/css/all.min.css">
-    
-
-    <style>
+     <style>
         .auth-buttons {
             display: flex;
             gap: 10px;
@@ -57,13 +60,14 @@
             margin-right: 5px;
         }
     </style>
+
 </head>
 <body>
     <div class="navigation-container">
         <div class="logo-section">
             <div class="logo">
                 <a class="navbar-logo" href="#">
-                    <img src="image/logowithoutname.png" alt="Logo" style="width:40px;" class="rounded-pill">
+                    <img src="../image/logowithoutname.png" alt="Logo" style="width:40px;" class="rounded-pill">
                 </a>
             </div>
             <div class="name">SMILEMAKER</div>
@@ -94,14 +98,14 @@
         <div class="action-buttons">
             <!-- Login State -->
             <div id="login-state" class="auth-buttons">
-                <button class="btn btn-outline" onclick="window.location.href = 'login.html'">Login</button>
+                <button class="btn outlineBtn" onclick="window.location.href = 'login.html'">Login</button>
                 <button class="btn btn-primary" onclick="window.location.href = 'register_patient.html'">Register</button>
             </div>
 
             <!-- Logged In State -->
             <div id="logged-in-state" class="auth-buttons" style="display: none;">
                 <div class="user-menu">
-                    <button class="btn btn-outline" id="username-btn" onclick="window.location.href = 'profile.html'">
+                    <button class="btn outlineBtn" id="username-btn" onclick="window.location.href = 'profile.html'">
                         <i class="fas fa-user"></i> <span id="username-text">Username</span>
                     </button>
                     <button class="btn btn-danger" onclick="logout()">
@@ -111,90 +115,146 @@
             </div>
         </div>
     </div>
-    
-    <section class="service-header main-header">
+
+    <!-- Hero Section -->
+    <section class="service-header bridge-header">
         <div class="serviceHeader-container">
-            <h1>Creating Beautiful, Healthy Smiles</h1>
-            <p>At SmileMaker Dental Clinic, we provide exceptional dental care in a comfortable environment. Our team of experts is dedicated to helping you achieve the perfect smile.</p>
-            
+            <h1>Crown & Bridge Services</h1>
+            <p>Restore your smile with our premium dental crown and bridge treatments. Custom-crafted to match your natural teeth for both function and aesthetics.</p>
+            <div class="btn-container">
+                <a href=".//book_appointment.php?service_category=Crown and Bridge&book_type=appointment&username=<?php echo urlencode($username_from_session); ?>" 
+                   class="bookBtn apptBtn"> Make Appointment</a>
+                <a href=".//consultation.php?service_category=Crown and Bridge&book_type=consultation&username=<?php echo urlencode($username_from_session); ?>" 
+                   class="bookBtn consultBtn">Book Consultation</a>
+            </div>
         </div>
     </section>
-    
-    <section class="content-section">
-            <h2 class="section-title">Our Dental Services</h2>
 
-            <div class="serviceContainer">
-            
-                <div class="optionsCard">
-                    <div class="options-img">
-                        <img src="image/general-dentistry.jpg" alt="General Dentistry">
-                    </div>
-                    <div class="options-content">
-                        <h3>General Dentistry</h3>
-                        <p>Regular checkups, cleanings, and preventive care to maintain your oral health.</p>
-                    </div>
-                </div>
-                
-               
-                <div class="optionsCard">
-                    <div class="options-img">
-                        <img src="image/cosmetic-dentistry.jpg" alt="Cosmetic Dentistry">
-                    </div>
-                    <div class="options-content">
-                        <h3>Cosmetic Dentistry</h3>
-                        <p>Teeth whitening, veneers, and other treatments to enhance your smile.</p>
-                    </div>
-                </div>
-                
-                <!-- Lingual Braces -->
-                <div class="optionsCard">
-                    <div class="options-img">
-                        <img src="image/orthodontics.jpg" alt="Orthodontics">
-                    </div>
-                    <div class="options-content">
-                        <h3>Orthodontics</h3>
-                        <p>Braces and aligners to straighten teeth and correct bite issues.</p>
-                    </div>
-                </div>
-                
-                <div class="optionsCard">
-                    <div class="options-img">
-                        <img src="image/sleep-dentistry.jpg" alt="Invisible Braces">
-                    </div>
-                    <div class="options-content">
-                        <h3>Sleep Dentistry</h3>
-                        <p>Comfortable dental treatment for anxious patients with sedation options.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-    
-    <section class="content-section">
-            <h2 class="section-title">Why Choose SmileMaker?</h2>
-            <p>Experience the difference in dental care</p>
+    <div class="container">
+        <!-- What's Included Section -->
+        <section class="content-section">
+            <h2 class="section-title">What are Dental Crowns & Bridges?</h2>
 
             <div class="twocolContainer">
                 <div>
-                    <p>At SmileMaker Dental Clinic, we combine state-of-the-art technology with a compassionate approach to dental care. Our team of experienced dentists and hygienists are dedicated to making your visit as comfortable and effective as possible.</p>
-                    <br>
-                    <p>We believe that everyone deserves a healthy, beautiful smile, and we're committed to providing personalized treatment plans that meet your unique needs and goals.</p>
-                    <br>
-                    <ul>
-                        <li>Modern, comfortable facility</li>
-                        <li>Friendly, experienced staff</li>
-                        <li>Flexible payment options</li>
-                        <li>Emergency dental services</li>
-                    </ul>
+                    <p>A dental crown is a tooth-shaped "cap" that is placed over a tooth to restore its shape, size, strength, and improve its appearance. Crowns are needed when a tooth is damaged, decayed, or discolored.</p>
+                    <p>A dental bridge is used to replace one or more missing teeth. It consists of artificial teeth anchored to adjacent natural teeth or implants. Bridges restore your smile, maintain facial shape, and prevent remaining teeth from shifting.</p>
+                    <p>At SmileMaker Dental, we use high-quality materials and advanced technology to create crowns and bridges that look, feel, and function like natural teeth.</p>
                 </div>
                 <div class="content-image">
-                    <img src="image/professional.jpg" alt="Professional Dentist Team">
+                    <img src="image/bridge-benefit.jpg" alt="Dental Check-Up">
                 </div>
             </div>
         </section>
 
+        <!-- Why Important Section -->
+        <section class="content-section">
+            <h2 class="section-title">Why choose these restorative treatments</h2>
+
+            <div class="twocolContainer">
+                <div class="content-image">
+                    <img src="image/bridge.jpg" alt="Dental Examination">
+                </div>
+                <div>
+                    <ul class="benefits-list">
+                        <li><i class="fas fa-hand-holding-medical"></i> <strong>Restore Dental Function</strong> - Allows for normal chewing, speaking, and biting force distribution.</li>
+                        <li><i class="fas fa-grip-lines"></i>    <strong>Prevent Teeth Shifting</strong> – Bridges prevent adjacent teeth from shifting into the gap left by missing teeth.</li>
+                        <li><i class="fas fa-grin"></i> <strong>Natural Appearance</strong> – Modern materials closely match the color and translucency of natural teeth.</li>
+                        <li><i class="fas fa-first-aid"></i> <strong>Protect Weakened Teeth</strong> – Crowns protect and strengthen teeth that have been weakened by decay or trauma.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2 class="section-title">Crown vs Bridge: Which is Right for You?</h2>
+            <p>Understanding the differences between these restorative option</p>
+
+            <table class="option-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Dental Crown</th>
+                        <th>Dental Bridge</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Purpose</td>
+                        <td>Restores a damaged tooth</td>
+                        <td>Replaces one or more missing teeth</td>
+                    </tr>
+                    <tr>
+                        <td>Procedure Complexity</td>
+                        <td>Moderate</td>
+                        <td>Moderate to Complex</td>
+                    </tr>
+                    <tr>
+                        <td>Treatment Time</td>
+                        <td>2 visits over 1-2 weeks</td>
+                        <td>2-3 visits over 2-3 weeks</td>
+                    </tr>
+                    <tr>
+                        <td>Durability</td>
+                        <td>5-15 years (depending on material)</td>
+                        <td>5-15 years (depending on material)</td>
+                    </tr>
+                    <tr>
+                        <td>Cost in Malaysia</td>
+                        <td>RM800 - RM2,000 per crown</td>
+                        <td>RM2,500 - RM6,000 per bridge</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Process Section -->
+        <section class="content-section">
+            <h2 class="section-title">The Crown & Bridge Process</h2>
+
+            <div class="bridge-process-steps">
+                <div class="step-card">
+                    <h1 class="numbers">&#49;</h1>
+                    <h3>Consultation</h3>
+                    <p>We examine your teeth, discuss options, and create a treatment plan.</p>
+                </div>
+
+                <div class="step-card">
+                    <h1 class="numbers">&#50;</h1>
+                    <h3>Tooth Preparation</h3>
+                    <p>The tooth is reshaped to make room for the crown or bridge.</p>
+                </div>
+
+                <div class="step-card">
+                    <h1 class="numbers">&#51;</h1>
+                    <h3>Impressions</h3>
+                    <p>Precise impressions are taken to create your custom restoration.</p>
+                </div>
+
+                <div class="step-card">
+                    <h1 class="numbers">&#52;</h1>
+                    <h3>Temporary Restoration</h3>
+                    <p>A temporary crown or bridge is placed while yours is being crafted.</p>
+                </div>
+
+                <div class="step-card">
+                    <h1 class="numbers">&#53;</h1>
+                    <h3>Fitting & Adjustment</h3>
+                    <p>Your permanent crown or bridge is checked for fit and comfort.</p>
+                </div>
+
+                <div class="step-card">
+                    <h1 class="numbers">&#54;</h1>
+                    <h3>Final Placement</h3>
+                    <p>The restoration is permanently cemented into place.</p>
+                </div>
+            </div>
+        </section>
+    </div>
 
     <footer class="footer">
         <div class="footer-container">
+
             <div class="footer-clinic">
                 <div class="footer-logo">
                     <img src="image/logowithnamewhite.png" alt="Logo" style="width:50px;">
@@ -205,6 +265,7 @@
                 </p>
             </div>
 
+            <!-- Contact Info -->
             <div class="footer-contact">
                 <p><strong>Contact Us</strong></p>
                 <p>123 Dental Street, City</p>
@@ -218,6 +279,7 @@
                 <p>Saturday - Sunday: 9:00 AM - 8:00 PM</p>
             </div>
 
+            <!-- Quick Links -->
             <div class="footer-links">
                 <p><strong>Quick Links</strong></p>
                 <a href=".//HomePage_patient.html">Home</a>
@@ -225,13 +287,13 @@
                 <a href="#services">Services</a>
                 <a href="#contact">Contact Us</a>
             </div>
+
         </div>
 
         <div class="footer-bottom">
             <p>&copy; 2025 SmileMaker Dental Clinic. All rights reserved.</p>
         </div>
     </footer>
-
     <script>
         function checkLoginStatus() {
             const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
@@ -290,3 +352,6 @@
     </script>
 </body>
 </html>
+
+
+

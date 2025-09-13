@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/controller/appointmentController.php';
+require_once __DIR__ . '/../controller/appointmentController.php';
 
 $controller = new appointmentController();
 

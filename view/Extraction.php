@@ -1,12 +1,65 @@
+<?php
+session_start();
+$username_from_session = isset($_SESSION['username']) ? $_SESSION['username'] : '';
+?>
+
 <!DOCTYPE html>
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Routine Checkup</title>
+    <title>Tooth Extraction</title>
     <link rel="stylesheet" href=".//homepageStyle.css">
     <link rel="stylesheet" href="fontawesome/css/fontawesome.min.css">
     <link rel="stylesheet" href="fontawesome/css/all.min.css">
+     <style>
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .user-menu {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #667eea;
+            color: #667eea;
+        }
+        .btn-outline:hover {
+            background: #667eea;
+            color: white;
+        }
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #5a6fd8;
+        }
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        .btn i {
+            margin-right: 5px;
+        }
+    </style>
 
 </head>
 <body>
@@ -27,22 +80,22 @@
                 <li class="dropdown">
                     <a href="#" class="dropbtn active">Service</a>
                     <div class="dropdown-content">
-                        <a href=".//RoutineCheckUp.html">Routine Check Up/Consultant</a>
-                        <a href=".//Whitening.html">Whitening</a>
-                        <a href=".//braces.html">Braces</a>
-                        <a href=".//Dentures.html">Dentures</a>
-                        <a href=".//Filling.html">Tooth Filling</a>
-                        <a href=".//Cleaning.html">Scaling and Polishing</a>
-                        <a href=".//CanalTreatment.html">Root Canal Treatment</a>
-                        <a href=".//CrownsBridges.html">Crowns and Bridges</a>
-                        <a href=".//Extraction.html">Tooth Extraction</a>
+                        <a href=".//RoutineCheckUp.php">Routine Check Up/Consultant</a>
+                        <a href=".//Whitening.php">Whitening</a>
+                        <a href=".//braces.php">Braces</a>
+                        <a href=".//Dentures.php">Dentures</a>
+                        <a href=".//Filling.php">Tooth Filling</a>
+                        <a href=".//Cleaning.php">Scaling and Polishing</a>
+                        <a href=".//CanalTreatment.php">Root Canal Treatment</a>
+                        <a href=".//CrownsBridges.php">Crowns and Bridges</a>
+                        <a href=".//Extraction.php">Tooth Extraction</a>
                     </div>
                 </li>
                 <li><a href="#contact">Contact Us</a></li>
             </ul>
         </div>
 
-         <div class="action-buttons">
+        <div class="action-buttons">
             <!-- Login State -->
             <div id="login-state" class="auth-buttons">
                 <button class="btn outlineBtn" onclick="window.location.href = 'login.html'">Login</button>
@@ -64,13 +117,15 @@
     </div>
 
     <!-- Hero Section -->
-    <section class="service-header checkup-header">
+    <section class="service-header extraction-header">
         <div class="serviceHeader-container">
-            <h1>Routine Dental Check-Up & Consultation</h1>
-            <p>Professional dental examinations to maintain optimal oral health and prevent problems before they start.</p>
+            <h1>Tooth Extraction Services</h1>
+            <p>Safe and comfortable tooth extraction procedures performed by our experienced dental surgeons. We prioritize your comfort and ensure minimal discomfort during the process.</p>
             <div class="btn-container">
-                <a href=".//book_appointment.php?service_category=Checkup&book_type=appointment" class="btn apptBtn"> Make Appointment</a>
-                <a href=".//consultation.php?service_category=Checkup&book_type=consultation" class="btn consultBtn">Book Consultation</a>
+                <a href=".//book_appointment.php?service_category=Surgical&book_type=appointment&username=<?php echo urlencode($username_from_session); ?>" 
+                   class="bookBtn apptBtn"> Make Appointment</a>
+                <a href=".//consultation.php?service_category=Surgical&book_type=consultation&username=<?php echo urlencode($username_from_session); ?>" 
+                   class="bookBtn consultBtn">Book Consultation</a>
             </div>
         </div>
     </section>
@@ -78,73 +133,70 @@
     <div class="container">
         <!-- What's Included Section -->
         <section class="content-section">
-            <h2 class="section-title">What's Included in Your Check-Up</h2>
+            <h2 class="section-title">What is Tooth Extraction?</h2>
 
             <div class="twocolContainer">
                 <div>
-                    <p>A routine dental check-up is your first line of defense against oral health problems. Our comprehensive examination includes:</p>
-                    <ul class="benefits-list">
-                        <li><i class="fas fa-teeth"></i> <strong>Comprehensive Oral Examination</strong> - Thorough assessment of teeth, gums, and mouth</li>
-                        <li><i class="fas fa-tooth"></i> <strong>Professional Cleaning</strong> - Removal of plaque and tartar buildup</li>
-                        <li><i class="fas fa-x-ray"></i> <strong>Oral Cancer Screening</strong> - Early detection of abnormalities</li>
-                        <li><i class="fas fa-camera"></i> <strong>Digital X-Rays</strong> - When needed for proper diagnosis</li>
-                        <li><i class="fas fa-comment-medical"></i> <strong>Personalized Advice</strong> - Tailored recommendations for your oral health</li>
-                    </ul>
+                    <p>Tooth extraction is the professional removal of a tooth from its socket in the bone. While preserving your natural teeth is always our priority, there are circumstances when extraction becomes necessary for your oral health.</p>
+                    
+                    <p>At SmileMaker Dental, we use advanced techniques to ensure the procedure is as comfortable and pain-free as possible. Our dentists will thoroughly explain the process and answer all your questions before proceeding.</p>
                 </div>
                 <div class="content-image">
-                    <img src="image/dental-checkup.jpg" alt="Dental Check-Up">
+                    <img src="image/extraction.jpg" alt="Dental Check-Up">
                 </div>
             </div>
         </section>
 
-        <!-- Why Important Section -->
+       <!-- Why Important Section -->
         <section class="content-section">
-            <h2 class="section-title">Why Regular Check-Ups Matter</h2>
+            <h2 class="section-title">When Extraction is Necessary?</h2>
 
             <div class="twocolContainer">
                 <div class="content-image">
-                    <img src="image/Dental-examination.jpg" alt="Dental Examination">
+                    <img src="image/extraction-reason.jpg" alt="Dental Examination">
                 </div>
                 <div>
-                    <p>Regular dental check-ups are essential for maintaining optimal oral health and preventing serious issues:</p>
+                    <p>Our dentists may recommend tooth extraction in the following situations:</p>
                     <ul class="benefits-list">
-                        <li><i class="fas fa-shield-alt"></i> <strong>Preventative Care</strong> - Catch problems early before they become serious</li>
-                        <li><i class="fas fa-money-bill-wave"></i> <strong>Cost Savings</strong> - Prevent expensive treatments with early detection</li>
-                        <li><i class="fas fa-smile"></i> <strong>Confidence</strong> - Maintain a healthy, beautiful smile</li>
-                        <li><i class="fas fa-stethoscope"></i> <strong>Overall Health</strong> - Oral health is connected to your general wellbeing</li>
+                        <li><i class="fas fa-fire"></i><strong>Severe tooth decay</strong> that cannot be treated with a filling or root canal</li>
+                        <li><i class="fas fa-band-aid"></i><strong>Advanced periodontal disease</strong> that has loosened the tooth</li>
+                        <li><i class="fas fa-teeth"></i><strong>Impacted wisdom teeth</strong> that are causing pain or potential problems</li>
+                        <li><i class="fas fa-layer-group"></i><strong>Crowded mouth</strong> when teeth need to be removed for orthodontic treatment</li>
+                        <li><i class="fas fa-tooth"></i><strong>Broken or fractured teeth</strong> that cannot be repaired</li>
+                        <li><i class="fas fa-bacteria"></i><strong>Risk of infection</strong> for patients with compromised immune systems</li>
                     </ul>
-                    <p>We recommend routine check-ups every six months, though your dentist may suggest a different schedule based on your individual needs.</p>
+                     <p>If you're experiencing dental pain or have been advised that you might need an extraction, our team at SmileMaker Dental will provide a thorough examination and discuss all available options with you.</p>
                 </div>
             </div>
         </section>
 
         <!-- Process Section -->
         <section class="content-section">
-            <h2 class="section-title">The Check-Up Process</h2>
+            <h2 class="section-title">Our Extraction Process</h2>
 
             <div class="process-steps">
                 <div class="step-card">
                     <h1 class="numbers">&#49;</h1>
-                    <h3>Medical History Review</h3>
-                    <p>We'll discuss any changes to your health or medications that might affect your oral health.</p>
+                    <h3>Examination</h3>
+                    <p>We begin with a thorough examination and X-rays to assess the tooth and surrounding bone structure.</p>
                 </div>
 
                 <div class="step-card">
                     <h1 class="numbers">&#50;</h1>
-                    <h3>Examination</h3>
-                    <p>Thorough inspection of your teeth, gums, mouth, and jaw for any signs of issues.</p>
+                    <h3>Anesthesia</h3>
+                     <p>Local anesthesia is administered to ensure a completely pain-free experience during the procedure.</p>
                 </div>
 
                 <div class="step-card">
                     <h1 class="numbers">&#51;</h1>
-                    <h3>Cleaning</h3>
-                    <p>Professional removal of plaque and tartar, followed by polishing your teeth.</p>
+                    <h3>Extraction</h3>
+                    <p>The dentist carefully loosens and removes the tooth using specialized instruments.</p>
                 </div>
 
                 <div class="step-card">
                     <h1 class="numbers">&#52;</h1>
-                    <h3>Consultation</h3>
-                    <p>Discussion of findings and personalized recommendations for your oral care.</p>
+                    <h3>Aftercare</h3>
+                    <p>We provide detailed aftercare instructions to promote healing and prevent complications.</p>
                 </div>
             </div>
         </section>

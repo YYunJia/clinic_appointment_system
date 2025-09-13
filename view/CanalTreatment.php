@@ -1,12 +1,65 @@
+<?php
+session_start();
+$username_from_session = isset($_SESSION['username']) ? $_SESSION['username'] : '';
+?>
+
 <!DOCTYPE html>
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tooth Extraction</title>
+    <title>Root Canal Treatment</title>
     <link rel="stylesheet" href=".//homepageStyle.css">
     <link rel="stylesheet" href="fontawesome/css/fontawesome.min.css">
     <link rel="stylesheet" href="fontawesome/css/all.min.css">
+     <style>
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .user-menu {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #667eea;
+            color: #667eea;
+        }
+        .btn-outline:hover {
+            background: #667eea;
+            color: white;
+        }
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #5a6fd8;
+        }
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        .btn i {
+            margin-right: 5px;
+        }
+    </style>
 
 </head>
 <body>
@@ -27,15 +80,15 @@
                 <li class="dropdown">
                     <a href="#" class="dropbtn active">Service</a>
                     <div class="dropdown-content">
-                        <a href=".//RoutineCheckUp.html">Routine Check Up/Consultant</a>
-                        <a href=".//Whitening.html">Whitening</a>
-                        <a href=".//braces.html">Braces</a>
-                        <a href=".//Dentures.html">Dentures</a>
-                        <a href=".//Filling.html">Tooth Filling</a>
-                        <a href=".//Cleaning.html">Scaling and Polishing</a>
-                        <a href=".//CanalTreatment.html">Root Canal Treatment</a>
-                        <a href=".//CrownsBridges.html">Crowns and Bridges</a>
-                        <a href=".//Extraction.html">Tooth Extraction</a>
+                        <a href=".//RoutineCheckUp.php">Routine Check Up/Consultant</a>
+                        <a href=".//Whitening.php">Whitening</a>
+                        <a href=".//braces.php">Braces</a>
+                        <a href=".//Dentures.php">Dentures</a>
+                        <a href=".//Filling.php">Tooth Filling</a>
+                        <a href=".//Cleaning.php">Scaling and Polishing</a>
+                        <a href=".//CanalTreatment.php">Root Canal Treatment</a>
+                        <a href=".//CrownsBridges.php">Crowns and Bridges</a>
+                        <a href=".//Extraction.php">Tooth Extraction</a>
                     </div>
                 </li>
                 <li><a href="#contact">Contact Us</a></li>
@@ -63,85 +116,83 @@
         </div>
     </div>
 
-    <!-- Hero Section -->
-    <section class="service-header extraction-header">
+ 
+    <section class="service-header canal-header">
         <div class="serviceHeader-container">
-            <h1>Tooth Extraction Services</h1>
-            <p>Safe and comfortable tooth extraction procedures performed by our experienced dental surgeons. We prioritize your comfort and ensure minimal discomfort during the process.</p>
+            <h1>Root Canal Treatment</h1>
+            <p>Expert root canal therapy to save your natural teeth and relieve pain. Our experienced dentists use the latest technology to ensure your comfort throughout the procedure.</p>
             <div class="btn-container">
-                <a href=".//book_appointment.html?service_category=Surgical&book_type=appointment" class="btn apptBtn"> Make Appointment</a>
-                <a href=".//consultation.html?service_category=Surgical&book_type=consultation" class="btn consultBtn">Book Consultation</a>
+                <a href=".//book_appointment.php?service_category=Endodontic&book_type=appointment&username=<?php echo urlencode($username_from_session); ?>" 
+                   class="bookBtn apptBtn"> Make Appointment</a>
+                <a href=".//consultation.php?service_category=Endodontic&book_type=consultation&username=<?php echo urlencode($username_from_session); ?>" 
+                   class="bookBtn consultBtn">Book Consultation</a>
             </div>
         </div>
     </section>
 
     <div class="container">
-        <!-- What's Included Section -->
+       
         <section class="content-section">
-            <h2 class="section-title">What is Tooth Extraction?</h2>
+            <h2 class="section-title">What is Root Canal Treatment?</h2>
 
             <div class="twocolContainer">
                 <div>
-                    <p>Tooth extraction is the professional removal of a tooth from its socket in the bone. While preserving your natural teeth is always our priority, there are circumstances when extraction becomes necessary for your oral health.</p>
-                    
-                    <p>At SmileMaker Dental, we use advanced techniques to ensure the procedure is as comfortable and pain-free as possible. Our dentists will thoroughly explain the process and answer all your questions before proceeding.</p>
+                    <p>Root canal treatment (also called endodontics) is needed when the blood or nerve supply of the tooth (known as the pulp) is infected through decay or injury.</p>
+                    <p>During the procedure, the infected or inflamed pulp is removed and the inside of the tooth is carefully cleaned and disinfected, then filled and sealed with a rubber-like material called gutta-percha. Afterwards, the tooth is restored with a crown or filling for protection.</p>
+                    <p>Contrary to popular belief, root canal treatment is no more painful than having a filling placed. Our modern techniques and anesthesia ensure you're comfortable throughout the procedure.</p>
                 </div>
                 <div class="content-image">
-                    <img src="image/extraction.jpg" alt="Dental Check-Up">
-                </div>
-            </div>
-        </section>
-
-       <!-- Why Important Section -->
-        <section class="content-section">
-            <h2 class="section-title">When Extraction is Necessary?</h2>
-
-            <div class="twocolContainer">
-                <div class="content-image">
-                    <img src="image/extraction-reason.jpg" alt="Dental Examination">
-                </div>
-                <div>
-                    <p>Our dentists may recommend tooth extraction in the following situations:</p>
-                    <ul class="benefits-list">
-                        <li><i class="fas fa-fire"></i><strong>Severe tooth decay</strong> that cannot be treated with a filling or root canal</li>
-                        <li><i class="fas fa-band-aid"></i><strong>Advanced periodontal disease</strong> that has loosened the tooth</li>
-                        <li><i class="fas fa-teeth"></i><strong>Impacted wisdom teeth</strong> that are causing pain or potential problems</li>
-                        <li><i class="fas fa-layer-group"></i><strong>Crowded mouth</strong> when teeth need to be removed for orthodontic treatment</li>
-                        <li><i class="fas fa-tooth"></i><strong>Broken or fractured teeth</strong> that cannot be repaired</li>
-                        <li><i class="fas fa-bacteria"></i><strong>Risk of infection</strong> for patients with compromised immune systems</li>
-                    </ul>
-                     <p>If you're experiencing dental pain or have been advised that you might need an extraction, our team at SmileMaker Dental will provide a thorough examination and discuss all available options with you.</p>
+                    <img src="image/treatment.jpg" alt="Dental Check-Up">
                 </div>
             </div>
         </section>
 
         <!-- Process Section -->
         <section class="content-section">
-            <h2 class="section-title">Our Extraction Process</h2>
+            <h2 class="section-title">The Check-Up Process</h2>
 
             <div class="process-steps">
                 <div class="step-card">
                     <h1 class="numbers">&#49;</h1>
-                    <h3>Examination</h3>
-                    <p>We begin with a thorough examination and X-rays to assess the tooth and surrounding bone structure.</p>
+                    <h3>Examination & X-Ray</h3>
+                    <p>We examine your tooth and take X-rays to assess the damage and plan the treatment.</p>
                 </div>
 
                 <div class="step-card">
                     <h1 class="numbers">&#50;</h1>
                     <h3>Anesthesia</h3>
-                     <p>Local anesthesia is administered to ensure a completely pain-free experience during the procedure.</p>
+                    <p>Local anesthesia is administered to ensure you feel no pain during the procedure.</p>
                 </div>
 
                 <div class="step-card">
                     <h1 class="numbers">&#51;</h1>
-                    <h3>Extraction</h3>
-                    <p>The dentist carefully loosens and removes the tooth using specialized instruments.</p>
+                    <h3>Pulp Removal</h3>
+                    <p>The infected pulp is carefully removed from the tooth's chambers and canals.</p>
                 </div>
 
                 <div class="step-card">
                     <h1 class="numbers">&#52;</h1>
-                    <h3>Aftercare</h3>
-                    <p>We provide detailed aftercare instructions to promote healing and prevent complications.</p>
+                    <h3>Filling & Sealing</h3>
+                    <p>The cleaned space is filled with biocompatible material and sealed to prevent reinfection.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Important Section -->
+        <section class="content-section">
+            <h2 class="section-title">Benefits of Root Canal Treatment</h2>
+
+            <div class="twocolContainer">
+                <div class="content-image">
+                    <img src="image/treatment-benefit.jpg" alt="Dental Examination">
+                </div>
+                <div>
+                    <ul class="benefits-list">
+                        <li><i class="fas fa-tooth"></i> <strong>Preserves Your Natural Tooth</strong> - Maintains your natural smile and prevents adjacent teeth from shifting</li>
+                        <li><i class="fas fa-utensils"></i> <strong>Efficient Chewing</strong> - Restores normal biting force and sensation, allowing you to eat comfortably</li>
+                        <li><i class="fas fa-smile"></i> <strong>Natural Appearance</strong> - Crowns are customized to match the color and shape of your natural teeth</li>
+                        <li><i class="fas fa-dollar-sign"></i> <strong>Cost-Effective</strong> - More affordable than tooth extraction followed by a bridge or implant</li>
+                    </ul>
                 </div>
             </div>
         </section>
@@ -149,16 +200,16 @@
 
     <footer class="footer">
         <div class="footer-container">
-            
-             <div class="footer-clinic">
-                    <div class="footer-logo">
-                        <img src="image/logowithnamewhite.png" alt="Logo" style="width:50px;">
-                        <div class="footer-name">SmileMaker Dental</div>
-                    </div>
-                    <p class="footer-intro">
-                        Providing comprehensive healthcare services with compassion and excellence since 2005. Our team of board-certified physicians is dedicated to your wellbeing.
-                    </p>
+
+            <div class="footer-clinic">
+                <div class="footer-logo">
+                    <img src="image/logowithnamewhite.png" alt="Logo" style="width:50px;">
+                    <div class="footer-name">SmileMaker Dental</div>
                 </div>
+                <p class="footer-intro">
+                    Providing comprehensive healthcare services with compassion and excellence since 2005. Our team of board-certified physicians is dedicated to your wellbeing.
+                </p>
+            </div>
 
             <!-- Contact Info -->
             <div class="footer-contact">
@@ -247,4 +298,6 @@
     </script>
 </body>
 </html>
+
+
 

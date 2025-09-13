@@ -15,10 +15,10 @@ class ServiceController {
         }
     }
     
-    public function getDetailByCategory($service_category)
+    public function getDetailByCategory($serviceCategory)
     {
         $serviceModel = new Service();
-        $services = $serviceModel->getServicesByCategory($service_category);
+        $services = $serviceModel->getServicesByCategory($serviceCategory);
         header('Content-Type: application/json');
         if ($services === false) {
             echo json_encode(['error' => 'No service detail found for the category']);

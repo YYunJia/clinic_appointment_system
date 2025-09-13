@@ -1,32 +1,9 @@
 <?php
-session_start();
-$username_from_session = isset($_SESSION['username']) ? $_SESSION['username'] : '';
-
-$username = isset($_GET['username']) ? $_GET['username'] : '';
 $serviceCategory = isset($_GET['service_category']) ? $_GET['service_category'] : '';
-
-$user = [];
 $services = [];
-$dentist = [];
-$available_slot = [];
-
-$selected_dentist = $_POST['doctor'] ?? '';
-$selected_date = $_POST['appointmentDate'] ?? '';
-
-if ($username) {
-    $url = 'http://localhost/clinic_appointment_system/auth/get_user.php?username=' . urlencode($username);
-    $response = file_get_contents($url);
-
-    if ($response !== false) {
-        $result = json_decode($response, true);
-        if ($result && $result['success']) {
-            $user = $result['user'];
-        }
-    }
-}
-
 if ($serviceCategory) {
     $url = 'http://localhost/clinic_appointment_system/auth/getServicesByCategoryService.php?service_category=' . urlencode($serviceCategory);
+
 
     $response = file_get_contents($url);
 
@@ -34,30 +11,6 @@ if ($serviceCategory) {
         return 0;
     } else {
         $services = json_decode($response, true);
-    }
-}
-
-
-$url = 'http://localhost/clinic_appointment_system/auth/getDentistService.php';
-
-$response = file_get_contents($url);
-
-if ($response === false) {
-    return 0;
-} else {
-    $dentist = json_decode($response, true);
-}
-
-
-if ($selected_dentist && $selected_date) {
-    $url = "http://localhost/clinic_appointment_system/auth/getAvailableSlotService.php?doctor_id=" . urlencode($selected_dentist) . "&date=" . urlencode($selected_date);
-
-    $response = file_get_contents($url);
-
-    if ($response === false) {
-        return 0;
-    } else {
-        $available_slot = json_decode($response, true);
     }
 }
 ?>
@@ -70,54 +23,6 @@ if ($selected_dentist && $selected_date) {
     <link rel="stylesheet" href=".//homepageStyle.css">
     <link rel="stylesheet" href="fontawesome/css/fontawesome.min.css">
     <link rel="stylesheet" href="fontawesome/css/all.min.css">
-    <style>
-        .auth-buttons {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-        .user-menu {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-        .btn {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-        .btn-outline {
-            background: transparent;
-            border: 2px solid #667eea;
-            color: #667eea;
-        }
-        .btn-outline:hover {
-            background: #667eea;
-            color: white;
-        }
-        .btn-primary {
-            background: #667eea;
-            color: white;
-        }
-        .btn-primary:hover {
-            background: #5a6fd8;
-        }
-        .btn-danger {
-            background: #dc3545;
-            color: white;
-        }
-        .btn-danger:hover {
-            background: #c82333;
-        }
-        .btn i {
-            margin-right: 5px;
-        }
-    </style>
 
 </head>
 <body>
@@ -138,22 +43,22 @@ if ($selected_dentist && $selected_date) {
                 <li class="dropdown">
                     <a href="#" class="dropbtn active">Service</a>
                     <div class="dropdown-content">
-                        <a href=".//RoutineCheckUp.php">Routine Check Up/Consultant</a>
-                        <a href=".//Whitening.php">Whitening</a>
-                        <a href=".//braces.php">Braces</a>
-                        <a href=".//Dentures.php">Dentures</a>
-                        <a href=".//Filling.php">Tooth Filling</a>
-                        <a href=".//Cleaning.php">Scaling and Polishing</a>
-                        <a href=".//CanalTreatment.php">Root Canal Treatment</a>
-                        <a href=".//CrownsBridges.php">Crowns and Bridges</a>
-                        <a href=".//Extraction.php">Tooth Extraction</a>
+                        <a href=".//RoutineCheckUp.html">Routine Check Up/Consultant</a>
+                        <a href=".//Whitening.html">Whitening</a>
+                        <a href=".//braces.html">Braces</a>
+                        <a href=".//Dentures.html">Dentures</a>
+                        <a href=".//Filling.html">Tooth Filling</a>
+                        <a href=".//Cleaning.html">Scaling and Polishing</a>
+                        <a href=".//CanalTreatment.html">Root Canal Treatment</a>
+                        <a href=".//CrownsBridges.html">Crowns and Bridges</a>
+                        <a href=".//Extraction.html">Tooth Extraction</a>
                     </div>
                 </li>
                 <li><a href="#contact">Contact Us</a></li>
             </ul>
         </div>
 
-        <div class="action-buttons">
+       <div class="action-buttons">
             <!-- Login State -->
             <div id="login-state" class="auth-buttons">
                 <button class="btn outlineBtn" onclick="window.location.href = 'login.html'">Login</button>
@@ -205,27 +110,27 @@ if ($selected_dentist && $selected_date) {
                 <div class="user-info-grid">
                     <div class="info-item">
                         <span class="info-label">Full Name</span>
-                        <span class="info-value"><?php echo htmlspecialchars($user['name'] ?? '') ?></span>
+                        <span class="info-value">John Smith</span>
                     </div>
                     <div class="info-item">
                         <span class="info-label">Email Address</span>
-                        <span class="info-value"><?php echo htmlspecialchars($user['email'] ?? '') ?></span>
+                        <span class="info-value">john.smith@example.com</span>
                     </div>
                     <div class="info-item">
                         <span class="info-label">Phone Number</span>
-                        <span class="info-value"><?php echo htmlspecialchars($user['phone_number'] ?? '') ?></span>
+                        <span class="info-value">+60 12 345 6789</span>
                     </div>
                 </div>
             </div>
 
 
-            <form id="appointmentForm">
-                <input type="hidden" name="userId" value="<?php echo htmlspecialchars($user['user_id'] ?? '') ?>">
+            <form id="appointmentForm" action="process_appointment.php" method="POST">
+                <input type="hidden" name="userId" value="12345">
 
                 <div class="form-grid">
                     <div class="form-group">
                         <label for="service">Service</label>
-                        <select class="serviceType" id="service" name="service_id" required>
+                        <select id="service" name="service_id" required>
                             <option value="">-- Select Service --</option>
                             <?php foreach ($services as $serviceOption): ?>
                                 <option value="<?php echo ($serviceOption['service_id']) ?>">
@@ -237,44 +142,104 @@ if ($selected_dentist && $selected_date) {
 
                     <div class="form-group full-width">
                         <label>Select a Dentist</label>
-                        <select class="serviceType" id="dentist" name="doctor_id" required onchange="this.form.submit()">
-                            <option value="">-- Select Dentist --</option>
-                            <?php foreach ($dentist as $dentistOption): ?>
-                                <option value="<?php echo ($dentistOption['doctor_id']) ?>"<?php if ($selected_dentist == $dentistOption['doctor_id']) echo "selected"; ?>>
-                                    <?php echo ($dentistOption['full_name'] . " (" . $dentistOption['specialization'] . ")"); ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
+                        <div class="doctors-grid">
+                            <div class="doctor-card" data-id="1">
+                                <div class="doctor-name">Dr. Ahmad Rizal</div>
+                                <div class="doctor-specialty">Prosthodontist</div>
+                                <input type="radio" name="doctor" value="1" style="display: none;">
+                            </div>
+
+                            <div class="doctor-card" data-id="2">
+                                <div class="doctor-name">Dr. Sarah Lim</div>
+                                <div class="doctor-specialty">Prosthodontist</div>
+                                <input type="radio" name="doctor" value="2" style="display: none;">
+                            </div>
+
+                            <div class="doctor-card" data-id="3">
+                                <div class="doctor-name">Dr. Wong Chen</div>
+                                <div class="doctor-specialty">General Dentist</div>
+                                <input type="radio" name="doctor" value="3" style="display: none;">
+                            </div>
+                        </div>
                     </div>
 
-                    <?php if ($selected_dentist): ?>
-                        <div class="form-group">
-                            <label for="appointmentDate">Select Date</label>
-                            <input type="date" id="appointmentDate" name="appointmentDate" value="<?php echo htmlspecialchars($selected_date); ?>" required onchange="this.form.submit()">
-                        </div>
-                    <?php endif; ?>
+                    <div class="form-group full-width">
+                        <label for="appointmentDate">Select Date</label>
+                        <div class="calendar">
+                            <div class="calendar-header">
+                                <button type="button">&lt; Prev</button>
+                                <span>June 2023</span>
+                                <button type="button">Next &gt;</button>
+                            </div>
+                            <div class="calendar-day">Sun</div>
+                            <div class="calendar-day">Mon</div>
+                            <div class="calendar-day">Tue</div>
+                            <div class="calendar-day">Wed</div>
+                            <div class="calendar-day">Thu</div>
+                            <div class="calendar-day">Fri</div>
+                            <div class="calendar-day">Sat</div>
 
-                    <!-- Available Slots -->
-                    <?php if ($selected_dentist && $selected_date): ?>
-                        <div class="form-group">
-                            <label for="appointmentTime">Select Time</label>
-                            <?php if (!empty($available_slots)): ?>
-                                <select name="appointmentTime" id="appointmentTime" required>
-                                    <option value="">-- Select Time Slot --</option>
-                                    <?php foreach ($available_slots as $slot): ?>
-                                        <option value="<?php echo htmlspecialchars($slot['start_time']); ?>">
-                                            <?php
-                                            echo htmlspecialchars(date('h:i A', strtotime($slot['start_time']))) . " - " .
-                                            htmlspecialchars(date('h:i A', strtotime($slot['end_time'])));
-                                            ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
-                            <?php else: ?>
-                                <p>No available slots for this date.</p>
-                            <?php endif; ?>
+                            <!-- Calendar days will be populated with JavaScript -->
+                            <div class="calendar-day disabled">28</div>
+                            <div class="calendar-day disabled">29</div>
+                            <div class="calendar-day disabled">30</div>
+                            <div class="calendar-day disabled">31</div>
+                            <div class="calendar-day">1</div>
+                            <div class="calendar-day">2</div>
+                            <div class="calendar-day">3</div>
+                            <div class="calendar-day">4</div>
+                            <div class="calendar-day">5</div>
+                            <div class="calendar-day">6</div>
+                            <div class="calendar-day">7</div>
+                            <div class="calendar-day">8</div>
+                            <div class="calendar-day">9</div>
+                            <div class="calendar-day">10</div>
+                            <div class="calendar-day">11</div>
+                            <div class="calendar-day">12</div>
+                            <div class="calendar-day">13</div>
+                            <div class="calendar-day">14</div>
+                            <div class="calendar-day">15</div>
+                            <div class="calendar-day selected">16</div>
+                            <div class="calendar-day">17</div>
+                            <div class="calendar-day">18</div>
+                            <div class="calendar-day">19</div>
+                            <div class="calendar-day">20</div>
+                            <div class="calendar-day">21</div>
+                            <div class="calendar-day">22</div>
+                            <div class="calendar-day">23</div>
+                            <div class="calendar-day">24</div>
+                            <div class="calendar-day">25</div>
+                            <div class="calendar-day">26</div>
+                            <div class="calendar-day">27</div>
+                            <div class="calendar-day">28</div>
+                            <div class="calendar-day">29</div>
+                            <div class="calendar-day">30</div>
+                            <div class="calendar-day disabled">1</div>
                         </div>
-                    <?php endif; ?>
+                        <input type="hidden" id="selectedDate" name="appointmentDate" value="2023-06-16">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="appointmentTime">Select Time</label>
+                        <div class="time-slots">
+                            <div class="time-slot disabled">9:00 AM</div>
+                            <div class="time-slot disabled">9:30 AM</div>
+                            <div class="time-slot">10:00 AM</div>
+                            <div class="time-slot">10:30 AM</div>
+                            <div class="time-slot">11:00 AM</div>
+                            <div class="time-slot">11:30 AM</div>
+                            <div class="time-slot disabled">12:00 PM</div>
+                            <div class="time-slot disabled">12:30 PM</div>
+                            <div class="time-slot">2:00 PM</div>
+                            <div class="time-slot">2:30 PM</div>
+                            <div class="time-slot">3:00 PM</div>
+                            <div class="time-slot selected">3:30 PM</div>
+                            <div class="time-slot">4:00 PM</div>
+                            <div class="time-slot">4:30 PM</div>
+                            <div class="time-slot">5:00 PM</div>
+                        </div>
+                        <input type="hidden" id="selectedTime" name="appointmentTime" value="15:30">
+                    </div>
 
                     <div class="form-group full-width">
                         <label for="notes">Additional Notes (Optional)</label>
@@ -368,7 +333,7 @@ if ($selected_dentist && $selected_date) {
         function checkLoginStatus() {
             const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
             const username = sessionStorage.getItem('username');
-            const userType = sessionStorage.getItem('userType');
+            const userType = sessionStorage.getItem('userType'); 
 
             if (isLoggedIn && username) {
                 document.getElementById('login-state').style.display = 'none';
@@ -390,65 +355,10 @@ if ($selected_dentist && $selected_date) {
             } else {
                 document.getElementById('login-state').style.display = 'block';
                 document.getElementById('logged-in-state').style.display = 'none';
-
+                
                 // Set links to redirect to login if not logged in
                 document.getElementById('appointment-link').href = 'login.html';
                 document.getElementById('consultation-link').href = 'login.html';
-            }
-        }
-
-        function logout() {
-            sessionStorage.clear();
-            window.location.href = '../auth/logout.php';
-        }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            const urlParams = new URLSearchParams(window.location.search);
-            const loginSuccess = urlParams.get('login');
-            const logoutSuccess = urlParams.get('logout');
-            const username = urlParams.get('username');
-            const userType = urlParams.get('role');
-
-            if (loginSuccess === 'success' && username && userType) {
-                sessionStorage.setItem('isLoggedIn', 'true');
-                sessionStorage.setItem('username', username);
-                sessionStorage.setItem('userType', userType);
-                window.history.replaceState({}, document.title, window.location.pathname);
-            } else if (logoutSuccess === 'success') {
-                sessionStorage.clear();
-                window.history.replaceState({}, document.title, window.location.pathname);
-            }
-
-            checkLoginStatus();
-        });
-
-        window.addEventListener('storage', function (e) {
-            if (e.key === 'isLoggedIn') {
-                checkLoginStatus();
-            }
-        });
-
-        function checkLoginStatus() {
-            const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
-            const username = sessionStorage.getItem('username');
-            const userType = sessionStorage.getItem('userType');
-
-            if (isLoggedIn && username) {
-                document.getElementById('login-state').style.display = 'none';
-                document.getElementById('logged-in-state').style.display = 'block';
-                document.getElementById('username-text').textContent = username;
-
-                const profileBtn = document.getElementById('username-btn');
-                if (userType === 'admin') {
-                    profileBtn.onclick = () => window.location.href = '../view/admin_dashboard.html';
-                } else if (userType === 'doctor') {
-                    profileBtn.onclick = () => window.location.href = '../view/doctor_dashboard.html';
-                } else {
-                    profileBtn.onclick = () => window.location.href = '../view/profile.html?username=' + encodeURIComponent(username);
-                }
-            } else {
-                document.getElementById('login-state').style.display = 'block';
-                document.getElementById('logged-in-state').style.display = 'none';
             }
         }
 

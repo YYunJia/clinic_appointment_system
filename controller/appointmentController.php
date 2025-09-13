@@ -1,9 +1,9 @@
 <?php
 
 require_once __DIR__ . '/../models/Appointment.php';
-require_once __DIR__ . '/../factory_method/serviceTypeFactory.php';
-require_once __DIR__ . '/../factory_method/appointmentTypeFactory.php';
-require_once __DIR__ . '/../models/Service.php'; 
+require_once __DIR__ . '/../models/serviceTypeFactory.php';
+require_once __DIR__ . '/../models/appointmentTypeFactory.php';
+require_once __DIR__ . '/../models/Service.php'; // Assuming you have a Service model to get service by ID
 
 class appointmentController {
 

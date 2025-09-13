@@ -1,65 +1,12 @@
-<?php
-session_start();
-$username_from_session = isset($_SESSION['username']) ? $_SESSION['username'] : '';
-?>
-
 <!DOCTYPE html>
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teeth Whitening</title>
+    <title>Crown & Bridge</title>
     <link rel="stylesheet" href=".//homepageStyle.css">
     <link rel="stylesheet" href="fontawesome/css/fontawesome.min.css">
-    <link rel="stylesheet" href="fontawesome/css/all.min.css">
-     <style>
-        .auth-buttons {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-        .user-menu {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-        .btn {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-        .btn-outline {
-            background: transparent;
-            border: 2px solid #667eea;
-            color: #667eea;
-        }
-        .btn-outline:hover {
-            background: #667eea;
-            color: white;
-        }
-        .btn-primary {
-            background: #667eea;
-            color: white;
-        }
-        .btn-primary:hover {
-            background: #5a6fd8;
-        }
-        .btn-danger {
-            background: #dc3545;
-            color: white;
-        }
-        .btn-danger:hover {
-            background: #c82333;
-        }
-        .btn i {
-            margin-right: 5px;
-        }
-    </style>
+    <link rel="stylesheet" href="fontawesome/css/all.mi n.css">
 
 </head>
 <body>
@@ -80,15 +27,15 @@ $username_from_session = isset($_SESSION['username']) ? $_SESSION['username'] : 
                 <li class="dropdown">
                     <a href="#" class="dropbtn active">Service</a>
                     <div class="dropdown-content">
-                        <a href=".//RoutineCheckUp.php">Routine Check Up/Consultant</a>
-                        <a href=".//Whitening.php">Whitening</a>
-                        <a href=".//braces.php">Braces</a>
-                        <a href=".//Dentures.php">Dentures</a>
-                        <a href=".//Filling.php">Tooth Filling</a>
-                        <a href=".//Cleaning.php">Scaling and Polishing</a>
-                        <a href=".//CanalTreatment.php">Root Canal Treatment</a>
-                        <a href=".//CrownsBridges.php">Crowns and Bridges</a>
-                        <a href=".//Extraction.php">Tooth Extraction</a>
+                        <a href=".//RoutineCheckUp.html">Routine Check Up/Consultant</a>
+                        <a href=".//Whitening.html">Whitening</a>
+                        <a href=".//braces.html">Braces</a>
+                        <a href=".//Dentures.html">Dentures</a>
+                        <a href=".//Filling.html">Tooth Filling</a>
+                        <a href=".//Cleaning.html">Scaling and Polishing</a>
+                        <a href=".//CanalTreatment.html">Root Canal Treatment</a>
+                        <a href=".//CrownsBridges.html">Crowns and Bridges</a>
+                        <a href=".//Extraction.html">Tooth Extraction</a>
                     </div>
                 </li>
                 <li><a href="#contact">Contact Us</a></li>
@@ -117,15 +64,13 @@ $username_from_session = isset($_SESSION['username']) ? $_SESSION['username'] : 
     </div>
 
     <!-- Hero Section -->
-    <section class="service-header whitening-header">
+    <section class="service-header bridge-header">
         <div class="serviceHeader-container">
-            <h1>Professional Teeth Whitening</h1>
-            <p>Brighten your smile with our safe and effective professional whitening treatments for a more confident you.</p>
+            <h1>Crown & Bridge Services</h1>
+            <p>Restore your smile with our premium dental crown and bridge treatments. Custom-crafted to match your natural teeth for both function and aesthetics.</p>
             <div class="btn-container">
-                <a href=".//book_appointment.php?service_category=Whitening&book_type=appointment&username=<?php echo urlencode($username_from_session); ?>" 
-                   class="bookBtn apptBtn"> Make Appointment</a>
-                <a href=".//consultation.php?service_category=Whitening&book_type=consultation&username=<?php echo urlencode($username_from_session); ?>" 
-                   class="bookBtn consultBtn">Book Consultation</a>
+                <a href=".//book_appointment.html?service_category=Crown and Bridge&book_type=appointment" class="btn apptBtn"> Make Appointment</a>
+                <a href=".//consultation.html?service_category=Crown and Bridge&book_type=consultation" class="btn consultBtn">Book Consultation</a>
             </div>
         </div>
     </section>
@@ -133,73 +78,120 @@ $username_from_session = isset($_SESSION['username']) ? $_SESSION['username'] : 
     <div class="container">
         <!-- What's Included Section -->
         <section class="content-section">
-            <h2 class="section-title">Our Whitening Options</h2>
+            <h2 class="section-title">What are Dental Crowns & Bridges?</h2>
 
             <div class="twocolContainer">
                 <div>
-                    <p>We offer professional teeth whitening solutions that are safe, effective, and customized to your needs. Our options include:</p>
-                    <ul class="benefits-list">
-                         <li><i class="fas fa-wand-magic-sparkles"></i> <strong>In-Office Whitening</strong> - Dramatic results in just one visit</li>
-                        <li><i class="fas fa-home"></i> <strong>Take-Home Kits</strong> - Professional-grade whitening at your convenience</li>
-                        <li><i class="fas fa-shield-alt"></i> <strong>Enamel-Safe Formulas</strong> - Advanced formulas that protect your teeth</li>
-                        <li><i class="fas fa-user-md"></i> <strong>Professional Supervision</strong> - Expert guidance for optimal results</li>
-                        <li><i class="fas fa-clipboard-list"></i> <strong>Customized Trays</strong> - Perfect fit for even whitening and comfort</li>
-                    </ul>
+                    <p>A dental crown is a tooth-shaped "cap" that is placed over a tooth to restore its shape, size, strength, and improve its appearance. Crowns are needed when a tooth is damaged, decayed, or discolored.</p>
+                    <p>A dental bridge is used to replace one or more missing teeth. It consists of artificial teeth anchored to adjacent natural teeth or implants. Bridges restore your smile, maintain facial shape, and prevent remaining teeth from shifting.</p>
+                    <p>At SmileMaker Dental, we use high-quality materials and advanced technology to create crowns and bridges that look, feel, and function like natural teeth.</p>
                 </div>
                 <div class="content-image">
-                    <img src="image/whitening.jpg" alt="Dental Check-Up">
+                    <img src="image/bridge-benefit.jpg" alt="Dental Check-Up">
                 </div>
             </div>
         </section>
 
         <!-- Why Important Section -->
         <section class="content-section">
-            <h2 class="section-title">Benefits of Professional Whitening</h2>
+            <h2 class="section-title">Why choose these restorative treatments</h2>
 
             <div class="twocolContainer">
                 <div class="content-image">
-                    <img src="image/whitening-benefit.jpg" alt="Dental Examination">
+                    <img src="image/bridge.jpg" alt="Dental Examination">
                 </div>
                 <div>
-                    <p>Professional teeth whitening offers significant advantages over store-bought products:</p>
                     <ul class="benefits-list">
-                        <li><i class="fas fa-bolt"></i> <strong>Faster Results</strong> - Noticeable improvement in just one session</li>
-                        <li><i class="fas fa-star"></i> <strong>Brighter Outcome</strong> - Professional formulas provide superior whitening</li>
-                        <li><i class="fas fa-teeth"></i> <strong>Customized Approach</strong> - Treatment tailored to your tooth sensitivity and goals</li>
-                        <li><i class="fas fa-check-circle"></i> <strong>Safe Procedure</strong> - Performed by dental professionals ensuring enamel protection</li>
+                        <li><i class="fas fa-hand-holding-medical"></i> <strong>Restore Dental Function</strong> - Allows for normal chewing, speaking, and biting force distribution.</li>
+                        <li><i class="fas fa-grip-lines"></i>    <strong>Prevent Teeth Shifting</strong> – Bridges prevent adjacent teeth from shifting into the gap left by missing teeth.</li>
+                        <li><i class="fas fa-grin"></i> <strong>Natural Appearance</strong> – Modern materials closely match the color and translucency of natural teeth.</li>
+                        <li><i class="fas fa-first-aid"></i> <strong>Protect Weakened Teeth</strong> – Crowns protect and strengthen teeth that have been weakened by decay or trauma.</li>
                     </ul>
-                    <p>During your consultation, we'll evaluate your oral health and recommend the best whitening approach for your specific needs.</p>
                 </div>
             </div>
         </section>
 
+        <section class="content-section">
+            <h2 class="section-title">Crown vs Bridge: Which is Right for You?</h2>
+            <p>Understanding the differences between these restorative option</p>
+
+            <table class="option-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Dental Crown</th>
+                        <th>Dental Bridge</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Purpose</td>
+                        <td>Restores a damaged tooth</td>
+                        <td>Replaces one or more missing teeth</td>
+                    </tr>
+                    <tr>
+                        <td>Procedure Complexity</td>
+                        <td>Moderate</td>
+                        <td>Moderate to Complex</td>
+                    </tr>
+                    <tr>
+                        <td>Treatment Time</td>
+                        <td>2 visits over 1-2 weeks</td>
+                        <td>2-3 visits over 2-3 weeks</td>
+                    </tr>
+                    <tr>
+                        <td>Durability</td>
+                        <td>5-15 years (depending on material)</td>
+                        <td>5-15 years (depending on material)</td>
+                    </tr>
+                    <tr>
+                        <td>Cost in Malaysia</td>
+                        <td>RM800 - RM2,000 per crown</td>
+                        <td>RM2,500 - RM6,000 per bridge</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
         <!-- Process Section -->
         <section class="content-section">
-            <h2 class="section-title">The Check-Up Process</h2>
+            <h2 class="section-title">The Crown & Bridge Process</h2>
 
-            <div class="process-steps">
+            <div class="bridge-process-steps">
                 <div class="step-card">
                     <h1 class="numbers">&#49;</h1>
-                     <h3>Initial Consultation</h3>
-                    <p>We examine your teeth and discuss your whitening goals to create a personalized treatment plan.</p>
+                    <h3>Consultation</h3>
+                    <p>We examine your teeth, discuss options, and create a treatment plan.</p>
                 </div>
 
                 <div class="step-card">
                     <h1 class="numbers">&#50;</h1>
-                    <h3>Preparation</h3>
-                    <p>We protect your gums and lips before applying the professional-grade whitening gel.</p>
+                    <h3>Tooth Preparation</h3>
+                    <p>The tooth is reshaped to make room for the crown or bridge.</p>
                 </div>
 
                 <div class="step-card">
                     <h1 class="numbers">&#51;</h1>
-                    <h3>Whitening Application</h3>
-                    <p>The whitening gel is applied and activated with a special light for enhanced results.</p>
+                    <h3>Impressions</h3>
+                    <p>Precise impressions are taken to create your custom restoration.</p>
                 </div>
 
                 <div class="step-card">
                     <h1 class="numbers">&#52;</h1>
-                    <h3>Aftercare Guidance</h3>
-                    <p>We provide instructions on maintaining your brighter smile and minimizing sensitivity.</p>
+                    <h3>Temporary Restoration</h3>
+                    <p>A temporary crown or bridge is placed while yours is being crafted.</p>
+                </div>
+
+                <div class="step-card">
+                    <h1 class="numbers">&#53;</h1>
+                    <h3>Fitting & Adjustment</h3>
+                    <p>Your permanent crown or bridge is checked for fit and comfort.</p>
+                </div>
+
+                <div class="step-card">
+                    <h1 class="numbers">&#54;</h1>
+                    <h3>Final Placement</h3>
+                    <p>The restoration is permanently cemented into place.</p>
                 </div>
             </div>
         </section>
@@ -207,16 +199,16 @@ $username_from_session = isset($_SESSION['username']) ? $_SESSION['username'] : 
 
     <footer class="footer">
         <div class="footer-container">
-            
-             <div class="footer-clinic">
-                    <div class="footer-logo">
-                        <img src="image/logowithnamewhite.png" alt="Logo" style="width:50px;">
-                        <div class="footer-name">SmileMaker Dental</div>
-                    </div>
-                    <p class="footer-intro">
-                        Providing comprehensive healthcare services with compassion and excellence since 2005. Our team of board-certified physicians is dedicated to your wellbeing.
-                    </p>
+
+            <div class="footer-clinic">
+                <div class="footer-logo">
+                    <img src="image/logowithnamewhite.png" alt="Logo" style="width:50px;">
+                    <div class="footer-name">SmileMaker Dental</div>
                 </div>
+                <p class="footer-intro">
+                    Providing comprehensive healthcare services with compassion and excellence since 2005. Our team of board-certified physicians is dedicated to your wellbeing.
+                </p>
+            </div>
 
             <!-- Contact Info -->
             <div class="footer-contact">
@@ -305,6 +297,4 @@ $username_from_session = isset($_SESSION['username']) ? $_SESSION['username'] : 
     </script>
 </body>
 </html>
-
-
 

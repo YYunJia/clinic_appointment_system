@@ -132,7 +132,7 @@ body {
     flex-shrink: 0;
 }
 
-.bookBtn {
+.btn {
     padding: 10px 20px;
     border-radius: 8px;
     font-weight: 600;
@@ -152,6 +152,35 @@ body {
     color: white;
 }
 
+.auth-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.user-menu {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.btn-primary {
+    background: #2a368e;
+    color: white;
+}
+.btn-primary:hover {
+    background: #5a6fd8;
+}
+.btn-danger {
+    background: #dc3545;
+    color: white;
+}
+.btn-danger:hover {
+    background: #c82333;
+}
+.btn i {
+    margin-right: 5px;
+}
 /* Footer */
 .footer {
     width: 100%;
@@ -255,11 +284,6 @@ body {
     z-index: -1;
 }
 
-.main-header::before{
-    background: url("/clinic_appointment_system/view/image/main-header.jpg") no-repeat center center;
-    background-size: cover;
-}
-
 .checkup-header::before{
     background: url("/clinic_appointment_system/view/image/dental-checkup-header.jpg") no-repeat center center;
     background-size: cover;
@@ -348,7 +372,7 @@ body {
     background: #f0f0f0;
 }
 
-
+/* Content Sections */
 .content-section {
     background: white;
     border-radius: 15px;
@@ -364,7 +388,7 @@ body {
     font-size: 2rem;
 }
 
-
+/* Two Column Layout */
 .twocolContainer{
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -374,12 +398,6 @@ body {
 
 .twocolContainer p {
     margin: 15px 0 10px 0;
-    line-height: 25px;
-
-}
-
-.twocolContainer ul {
-    margin-left: 30px;
     line-height: 25px;
 
 }
@@ -458,17 +476,10 @@ body {
     font-weight: bold;
     font-size: 30px;
 }
-
+/* Braces Showcase */
 .optionsContainer {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    gap: 25px;
-    margin-top: 40px;
-}
-
-.serviceContainer {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
     gap: 25px;
     margin-top: 40px;
 }
@@ -537,8 +548,6 @@ body {
     border-bottom: none;
 }
 
-
-/*booking page*/
 .progress-bar {
     display: flex;
     justify-content: space-between;
@@ -578,31 +587,6 @@ body {
     left: -40px;
     text-align: center;
 }
-
-.serviceType {
-    width: 100%;
-    padding: 10px 15px;
-    font-size: 16px;
-    border: 2px solid #e9ecef;
-    border-radius: 8px;
-    background-color: #fff;
-    color: #333;
-    outline: none;
-    background-size: 20px;
-   
-}
-
-/* Hover */
-.serviceType:hover {
-    border-color: #2a368e;
-
-}
-
-/* Focus */
-.serviceType:focus {
-    border-color: #0d6efd;
-}
-
 
 .progress-bar::before {
     content: '';

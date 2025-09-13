@@ -96,12 +96,11 @@ class AuthenticationController {
 
         if ($result['success']) {
             $userType = $result['user']['user_type'];
-            $username = $result['user']['username'];
 
             // Redirect based on user_type
             switch ($userType) {
                 case 'patient':
-                    header("Location: ../homepage_patient.html?login=success&username={$username}&role={$userType}");
+                    header('Location: ../view/homepage_patient.html');
                     break;
                 case 'doctor':
                     header('Location: ../view/doctor_dashboard.html');

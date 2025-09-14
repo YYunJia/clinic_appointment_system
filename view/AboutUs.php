@@ -56,6 +56,79 @@
             .btn i {
                 margin-right: 5px;
             }
+
+            .section {
+                padding: 80px 0;
+            }
+
+
+            .stats-container {
+                background: #2a368e;
+                color: white;
+                padding: 40px;
+                margin: 0 40px 0 40px;
+                border-radius: 10px;
+                max-width: 1500px;
+                align-items: center;
+            }
+
+            .stats-grid {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 30px;
+                text-align: center;
+            }
+
+            .stat-item h3 {
+                font-size: 42px;
+                margin-bottom: 10px;
+                font-weight: 700;
+            }
+
+            .stat-item p {
+                font-size: 18px;
+                opacity: 0.9;
+            }
+
+
+            .mission-container {
+                background: white;
+                padding: 10px 40px;
+                border-radius: 10px;
+                margin-bottom: 60px;
+            }
+
+            .mission-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 30px;
+            }
+
+            .mission-item {
+                background: #F6F6F6;
+                border-radius: 10px;
+                padding: 25px;
+                text-align: center;
+            }
+
+            .mission-icon {
+                width: 80px;
+                height: 80px;
+                background: #2a368e;
+                color: white;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 30px;
+                margin: 0 auto 20px;
+            }
+
+            .mission-item h4 {
+                font-size: 20px;
+                color: #2a368e;
+                margin-bottom: 15px;
+            }
         </style>
     </head>
     <body>
@@ -112,7 +185,7 @@
             </div>
         </div>
 
-        <section class="service-header main-header">
+        <section class="service-header aboutus-header">
             <div class="serviceHeader-container">
                 <h1>About SmileMaker Dental</h1>
                 <p>Your trusted partner in dental care for over 15 years. We are committed to providing exceptional dental services with compassion and expertise.</p>
@@ -122,7 +195,6 @@
 
         <section class="content-section">
             <h2 class="section-title">Our Story</h2>
-            <p>Experience the difference in dental care</p>
 
             <div class="twocolContainer">
                 <div>
@@ -131,51 +203,132 @@
                     <p>Over the years, we've helped thousands of patients achieve healthier, more beautiful smiles while maintaining our commitment to personalized care and clinical excellence.</p>
                 </div>
                 <div class="content-image">
-                    <img src="image/professional.jpg" alt="Professional Dentist Team">
+                    <img src="image/profession.png" alt="Professional Dentist Team">
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="section">
+            <div class="container">
+                <div class="stats-container">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <h3>15+</h3>
+                            <p>Years of Experience</p>
+                        </div>
+
+                        <div class="stat-item">
+                            <h3>10,000+</h3>
+                            <p>Happy Patients</p>
+                        </div>
+
+                        <div class="stat-item">
+                            <h3>5</h3>
+                            <p>Dental Specialists</p>
+                        </div>
+
+                        <div class="stat-item">
+                            <h3>98%</h3>
+                            <p>Patient Satisfaction</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
         <section class="content-section">
-                    <h2 class="section-title">Our Mission & Values</h2>
-                    <p>Guiding principles that define who we are and how we care for our patients</p>
-                    
-                <div class="mission-container">
-                    <div class="mission-grid">
-                        <div class="mission-item">
-                            <div class="mission-icon">
-                                <i class="fas fa-heart"></i>
-                            </div>
-                            <h4>Patient-Centered Care</h4>
-                            <p>We prioritize your comfort and needs, ensuring you receive personalized treatment in a warm, welcoming environment.</p>
-                        </div>
 
-                        <div class="mission-item">
-                            <div class="mission-icon">
-                                <i class="fas fa-award"></i>
-                            </div>
-                            <h4>Clinical Excellence</h4>
-                            <p>We maintain the highest standards of dental practice through continuous education and adoption of advanced technologies.</p>
+            <h2 class='section-title'>Our Mission & Values</h2>
+            <div class="mission-container">
+                <div class="mission-grid">
+                    <div class="mission-item">
+                        <div class="mission-icon">
+                            <i class="fas fa-heart"></i>
                         </div>
+                        <h4>Patient-Centered Care</h4>
+                        <p>We prioritize your comfort and needs, ensuring you receive personalized treatment in a warm, welcoming environment.</p>
+                    </div>
 
-                        <div class="mission-item">
-                            <div class="mission-icon">
-                                <i class="fas fa-hand-holding-heart"></i>
-                            </div>
-                            <h4>Compassionate Service</h4>
-                            <p>We understand dental visits can be stressful, so we provide gentle care with empathy and understanding.</p>
+                    <div class="mission-item">
+                        <div class="mission-icon">
+                            <i class="fas fa-award"></i>
                         </div>
+                        <h4>Clinical Excellence</h4>
+                        <p>We maintain the highest standards of dental practice through continuous education and adoption of advanced technologies.</p>
+                    </div>
 
-                        <div class="mission-item">
-                            <div class="mission-icon">
-                                <i class="fas fa-shield-alt"></i>
-                            </div>
-                            <h4>Integrity & Trust</h4>
-                            <p>We build lasting relationships with our patients through honest communication and ethical practices.</p>
+                    <div class="mission-item">
+                        <div class="mission-icon">
+                            <i class="fas fa-hand-holding-heart"></i>
                         </div>
+                        <h4>Compassionate Service</h4>
+                        <p>We understand dental visits can be stressful, so we provide gentle care with empathy and understanding.</p>
+                    </div>
+
+                    <div class="mission-item">
+                        <div class="mission-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h4>Integrity & Trust</h4>
+                        <p>We build lasting relationships with our patients through honest communication and ethical practices.</p>
                     </div>
                 </div>
-           
+            </div>
+        </section>
+
+        <section class="content-section">
+
+            <h2 class="section-title">Meet Our Dental Team</h2>
+            <div class="team-container">
+                <div class="member-card">
+                    <div class="member-image">
+                        <img src="image/chenweiming.png" alt="Chen Wei Ming">
+                    </div>
+                    <div class="member-info">
+                        <h4>Dr. Chen Wei Ming</h4>
+                        <p>Founder & Senior Dentist</p>
+                        <p>BDS (UIAM), MS Oral Surgery (UKM)</p>
+                    </div>
+
+                </div>
+
+                <div class="member-card">
+                    <div class="member-image">
+                        <img src="image/leejiaen.png" alt="Lee Jia En">
+                    </div>
+                    <div class="member-info">
+                        <h4>Dr. Lee Jia En</h4>
+                        <p>Orthodontic Specialist</p>
+                        <p>BDS (USM), D.Ortho (Malaya)</p>
+                    </div>
+
+                </div>
+
+                <div class="member-card">
+                    <div class="member-image">
+                        <img src="image/natasha.png" alt="Natasha">
+                    </div>
+                    <div class="member-info">
+                        <h4>Dr. Natasha</h4>
+                        <p>Oral Surgeon</p>
+                        <p>BDS (UIAM), MS Oral Surgery (UKM)</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="section-title">
+                <h4>Experience the SmileMaker Difference</h4>
+                <p>Schedule your visit today and discover why we're one of Malaysia's most trusted dental clinics</p>
+            </div>
+
+            <div class="btn-container">
+                <a href=".//book_appointment.php?service_category=Whitening&book_type=appointment&username=<?php echo urlencode($username_from_session); ?>" 
+                   class="bookBtn apptBtn"> Make Appointment</a>
+            </div>
         </section>
 
 

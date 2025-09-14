@@ -134,11 +134,12 @@ body {
 
 .bookBtn {
     padding: 10px 20px;
-    border-radius: 8px;
+    border-radius: 20px;
     font-weight: 600;
     font-size: 16px;
     cursor: pointer;
     transition: all 0.3s ease;
+    width: 500px;
 }
 
 .outlineBtn {
@@ -256,7 +257,12 @@ body {
 }
 
 .main-header::before{
-    background: url("/clinic_appointment_system/view/image/main-header.jpg") no-repeat center center;
+    background: url("/clinic_appointment_system/view/image/smilemaker-main.png") no-repeat center center;
+    background-size: cover;
+}
+
+.aboutus-header::before{
+    background: url("/clinic_appointment_system/view/image/smilemaker.png") no-repeat center center;
     background-size: cover;
 }
 
@@ -330,23 +336,14 @@ body {
     background: #2a368e;
     color: white;
     text-decoration: none;
-    padding: 15px;
+    padding: 10px 40px 10px 40px;
+    
 }
 
 .apptBtn:hover {
     background: #1c2561;
 }
 
-.consultBtn {
-    background: white;
-    color: #2a368e;
-    text-decoration: none;
-    padding: 15px;
-}
-
-.consultBtn:hover {
-    background: #f0f0f0;
-}
 
 
 .content-section {
@@ -866,42 +863,63 @@ body {
 }
 
 /*About us design*/
-.mission-container {
-    background: #e6f2ff;
-    padding: 60px 40px;
-    border-radius: 10px;
-    margin-bottom: 60px;
-}
 
-.mission-grid {
+
+.team-container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
     gap: 30px;
     margin-top: 40px;
 }
 
-.mission-item {
-    background: white;
-    border-radius: 10px;
-    padding: 25px;
+.member-card {
     text-align: center;
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    transition: transform 0.3s ease;
 }
 
-.mission-icon {
-    width: 80px;
-    height: 80px;
-    background: #2a368e;
-    color: white;
+.team-member:hover {
+    transform: translateY(-10px);
+}
+
+.member-image {
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 30px;
+    overflow: hidden;
     margin: 0 auto 20px;
+    border: 5px solid #e6f2ff;
 }
 
-.mission-item h4 {
+.member-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.member-info h4 {
     font-size: 20px;
     color: #2a368e;
+    margin-bottom: 5px;
+}
+
+.member-info p {
+    color: #666;
     margin-bottom: 15px;
 }
+
+
+.cta-section {
+    background: #e6f2ff;
+    text-align: center;
+    border-radius: 15px;
+    padding: 40px;
+    margin: 20px 40px 40px 40px;
+    
+}
+.cta-section p{
+    font-size: 1.2rem;
+}
+

@@ -124,8 +124,6 @@ $username_from_session = isset($_SESSION['username']) ? $_SESSION['username'] : 
             <div class="btn-container">
                 <a href=".//book_appointment.php?service_category=Whitening&book_type=appointment&username=<?php echo urlencode($username_from_session); ?>" 
                    class="bookBtn apptBtn"> Make Appointment</a>
-                <a href=".//consultation.php?service_category=Whitening&book_type=consultation&username=<?php echo urlencode($username_from_session); ?>" 
-                   class="bookBtn consultBtn">Book Consultation</a>
             </div>
         </div>
     </section>

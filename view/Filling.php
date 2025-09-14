@@ -1,3 +1,8 @@
+<?php
+session_start();
+$username_from_session = isset($_SESSION['username']) ? $_SESSION['username'] : '';
+?>
+
 <!DOCTYPE html>
 
 <head>
@@ -7,6 +12,54 @@
     <link rel="stylesheet" href=".//homepageStyle.css">
     <link rel="stylesheet" href="fontawesome/css/fontawesome.min.css">
     <link rel="stylesheet" href="fontawesome/css/all.min.css">
+     <style>
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .user-menu {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #667eea;
+            color: #667eea;
+        }
+        .btn-outline:hover {
+            background: #667eea;
+            color: white;
+        }
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #5a6fd8;
+        }
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        .btn i {
+            margin-right: 5px;
+        }
+    </style>
 
 </head>
 <body>
@@ -27,15 +80,15 @@
                 <li class="dropdown">
                     <a href="#" class="dropbtn active">Service</a>
                     <div class="dropdown-content">
-                        <a href=".//RoutineCheckUp.html">Routine Check Up/Consultant</a>
-                        <a href=".//Whitening.html">Whitening</a>
-                        <a href=".//braces.html">Braces</a>
-                        <a href=".//Dentures.html">Dentures</a>
-                        <a href=".//Filling.html">Tooth Filling</a>
-                        <a href=".//Cleaning.html">Scaling and Polishing</a>
-                        <a href=".//CanalTreatment.html">Root Canal Treatment</a>
-                        <a href=".//CrownsBridges.html">Crowns and Bridges</a>
-                        <a href=".//Extraction.html">Tooth Extraction</a>
+                        <a href=".//RoutineCheckUp.php">Routine Check Up/Consultant</a>
+                        <a href=".//Whitening.php">Whitening</a>
+                        <a href=".//braces.php">Braces</a>
+                        <a href=".//Dentures.php">Dentures</a>
+                        <a href=".//Filling.php">Tooth Filling</a>
+                        <a href=".//Cleaning.php">Scaling and Polishing</a>
+                        <a href=".//CanalTreatment.php">Root Canal Treatment</a>
+                        <a href=".//CrownsBridges.php">Crowns and Bridges</a>
+                        <a href=".//Extraction.php">Tooth Extraction</a>
                     </div>
                 </li>
                 <li><a href="#contact">Contact Us</a></li>
@@ -69,8 +122,10 @@
             <h1>Tooth Filling Services</h1>
             <p>Professional tooth filling treatments to restore your teeth and prevent further decay. Our dental experts use high-quality materials to ensure long-lasting results.</p>
             <div class="btn-container">
-                <a href=".//book_appointment.html?service_category=Filling&book_type=appointment" class="btn apptBtn"> Make Appointment</a>
-                <a href=".//consultation.html?service_category=Filling&book_type=consultation" class="btn consultBtn">Book Consultation</a>
+                <a href=".//book_appointment.php?service_category=Filling&book_type=appointment&username=<?php echo urlencode($username_from_session); ?>" 
+                   class="bookBtn apptBtn"> Make Appointment</a>
+                <a href=".//consultation.php?service_category=Filling&book_type=consultation&username=<?php echo urlencode($username_from_session); ?>" 
+                   class="bookBtn consultBtn">Book Consultation</a>
             </div>
         </div>
     </section>
@@ -288,4 +343,6 @@
     </script>
 </body>
 </html>
+
+
 

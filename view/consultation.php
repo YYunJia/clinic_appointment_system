@@ -1,3 +1,39 @@
+<?php
+session_start();
+$username_from_session = isset($_SESSION['username']) ? $_SESSION['username'] : '';
+
+$username = isset($_GET['username']) ? $_GET['username'] : '';
+$serviceCategory = isset($_GET['service_category']) ? $_GET['service_category'] : '';
+$user = [];
+$services = [];
+
+if ($username) {
+    $url = 'http://localhost/clinic_appointment_system/auth/get_user.php?username=' . urlencode($username);
+    $response = file_get_contents($url);
+
+    if ($response !== false) {
+        $result = json_decode($response, true);
+        if ($result && $result['success']) {
+            $user = $result['user'];
+        }
+    }
+}
+
+if ($serviceCategory) {
+    $url = 'http://localhost/clinic_appointment_system/auth/getServicesByCategoryService.php?service_category=' . urlencode($serviceCategory);
+
+
+    $response = file_get_contents($url);
+
+    if ($response === false) {
+        return 0;
+    } else {
+        $services = json_decode($response, true);
+    }
+}
+
+?>
+
 <!DOCTYPE html>
 
 <head>
@@ -7,6 +43,54 @@
     <link rel="stylesheet" href=".//homepageStyle.css">
     <link rel="stylesheet" href="fontawesome/css/fontawesome.min.css">
     <link rel="stylesheet" href="fontawesome/css/all.min.css">
+     <style>
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .user-menu {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #667eea;
+            color: #667eea;
+        }
+        .btn-outline:hover {
+            background: #667eea;
+            color: white;
+        }
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #5a6fd8;
+        }
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        .btn i {
+            margin-right: 5px;
+        }
+    </style>
 
 </head>
 <body>
@@ -27,15 +111,15 @@
                 <li class="dropdown">
                     <a href="#" class="dropbtn active">Service</a>
                     <div class="dropdown-content">
-                        <a href=".//RoutineCheckUp.html">Routine Check Up/Consultant</a>
-                        <a href=".//Whitening.html">Whitening</a>
-                        <a href=".//braces.html">Braces</a>
-                        <a href=".//Dentures.html">Dentures</a>
-                        <a href=".//Filling.html">Tooth Filling</a>
-                        <a href=".//Cleaning.html">Scaling and Polishing</a>
-                        <a href=".//CanalTreatment.html">Root Canal Treatment</a>
-                        <a href=".//CrownsBridges.html">Crowns and Bridges</a>
-                        <a href=".//Extraction.html">Tooth Extraction</a>
+                        <a href=".//RoutineCheckUp.php">Routine Check Up/Consultant</a>
+                        <a href=".//Whitening.php">Whitening</a>
+                        <a href=".//braces.php">Braces</a>
+                        <a href=".//Dentures.php">Dentures</a>
+                        <a href=".//Filling.php">Tooth Filling</a>
+                        <a href=".//Cleaning.php">Scaling and Polishing</a>
+                        <a href=".//CanalTreatment.php">Root Canal Treatment</a>
+                        <a href=".//CrownsBridges.php">Crowns and Bridges</a>
+                        <a href=".//Extraction.php">Tooth Extraction</a>
                     </div>
                 </li>
                 <li><a href="#contact">Contact Us</a></li>
@@ -78,15 +162,15 @@
                 <div class="user-info-grid">
                     <div class="info-item">
                         <span class="info-label">Full Name</span>
-                        <span class="info-value">John Smith</span>
+                        <span class="info-value"><?php echo htmlspecialchars($user['name'] ?? '') ?></span>
                     </div>
                     <div class="info-item">
                         <span class="info-label">Email Address</span>
-                        <span class="info-value">john.smith@example.com</span>
+                        <span class="info-value"><?php echo htmlspecialchars($user['email'] ?? '') ?></span>
                     </div>
                     <div class="info-item">
                         <span class="info-label">Phone Number</span>
-                        <span class="info-value">+60 12 345 6789</span>
+                        <span class="info-value"><?php echo htmlspecialchars($user['phone_number'] ?? '') ?></span>
                     </div>
                 </div>
             </div>
@@ -96,9 +180,16 @@
                 <input type="hidden" name="userId" value="12345">
 
                 <div class="form-grid">
-                    <div class="form-group">
+                     <div class="form-group">
                         <label for="service">Service</label>
-                        <input type="text" id="service" name="service" class="form-control" value="Complete Dentures" readonly>
+                        <select class="serviceType" id="service" name="service_id" required>
+                            <option value="">-- Select Service --</option>
+                            <?php foreach ($services as $serviceOption): ?>
+                                <option value="<?php echo ($serviceOption['service_id']) ?>">
+                                    <?php echo ($serviceOption['service_name']) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
 
                     <div class="form-group full-width">
@@ -343,7 +434,65 @@
                 this.submit();
             });
         });
+        
+        
+        function checkLoginStatus() {
+            const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+            const username = sessionStorage.getItem('username');
+            const userType = sessionStorage.getItem('userType'); 
+
+            if (isLoggedIn && username) {
+                document.getElementById('login-state').style.display = 'none';
+                document.getElementById('logged-in-state').style.display = 'block';
+                document.getElementById('username-text').textContent = username;
+
+                const profileBtn = document.getElementById('username-btn');
+                if (userType === 'admin') {
+                    profileBtn.onclick = () => window.location.href = '../view/admin_dashboard.html';
+                } else if (userType === 'doctor') {
+                    profileBtn.onclick = () => window.location.href = '../view/doctor_dashboard.html';
+                } else {
+                    profileBtn.onclick = () => window.location.href = '../view/profile.html?username=' + encodeURIComponent(username);
+                }
+            } else {
+                document.getElementById('login-state').style.display = 'block';
+                document.getElementById('logged-in-state').style.display = 'none';
+            }
+        }
+
+        function logout() {
+            sessionStorage.clear();
+            window.location.href = '../auth/logout.php';
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const loginSuccess = urlParams.get('login');
+            const logoutSuccess = urlParams.get('logout');
+            const username = urlParams.get('username');
+            const userType = urlParams.get('role');
+
+            if (loginSuccess === 'success' && username && userType) {
+                sessionStorage.setItem('isLoggedIn', 'true');
+                sessionStorage.setItem('username', username);
+                sessionStorage.setItem('userType', userType);
+                window.history.replaceState({}, document.title, window.location.pathname);
+            } else if (logoutSuccess === 'success') {
+                sessionStorage.clear();
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+
+            checkLoginStatus();
+        });
+
+        window.addEventListener('storage', function (e) {
+            if (e.key === 'isLoggedIn') {
+                checkLoginStatus();
+            }
+        });
+    
     </script>
 </body>
 </html>
+
 
